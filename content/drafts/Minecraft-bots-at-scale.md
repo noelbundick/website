@@ -1,5 +1,6 @@
 ---
 title: Minecraft bots at scale
+draft: true
 tags:
 ---
 

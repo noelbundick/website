@@ -1,5 +1,6 @@
 ---
 title: Post Ideas
+draft: true
 tags:
 ---
 

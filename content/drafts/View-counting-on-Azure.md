@@ -1,5 +1,6 @@
 ---
 title: View counting on Azure
+draft: true
 tags:
 ---
 

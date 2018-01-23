@@ -1,5 +1,6 @@
 ---
 title: Intro to Azure Event Grid
+draft: true
 tags:
 ---
 

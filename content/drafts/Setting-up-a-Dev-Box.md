@@ -1,5 +1,6 @@
 ---
 title: Setting up a Dev Box
+draft: true
 tags:
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: Docker Compose apps on Service Fabric
+draft: true
 tags:
   - docker
   - azure

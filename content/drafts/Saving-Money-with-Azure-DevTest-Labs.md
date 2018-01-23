@@ -1,5 +1,6 @@
 ---
 title: Saving Money with Azure DevTest Labs
+draft: true
 tags: azure
 ---
 

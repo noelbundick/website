@@ -1,5 +1,6 @@
 ---
 title: Running a Development Virtual Machine in Azure
+draft: true
 tags:
 ---
 
