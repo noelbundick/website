@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Noel Bundick">
+<meta name="description" content="Describe your website">
+<meta name="generator" content="Hugo 0.32.2" />
+<title>Fun with Azure Container Instances</title>
+<link rel="shortcut icon" href="https://www.noelbundick.com/images/favicon.ico">
+<link rel="stylesheet" href="https://www.noelbundick.com/css/style.css">
+<link rel="stylesheet" href="https://www.noelbundick.com/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+
+
+<link href="https://www.noelbundick.com/index.xml" rel="alternate" type="application/rss+xml" title="Noel Bundick" />
+
+
+<meta property="og:title" content="Fun with Azure Container Instances" />
+<meta property="og:description" content="Fun with Azure Container Instances Azure Container Instances were recently announced, making it easy for developers to spin up a container on-demand without having to provision and maintain a VM or a cluster. It&rsquo;s been well received by the community, and there are already a ton of great resources to help you get started.
+But that&rsquo;s not what this post is about! Truthfully, I can only sit through so many canned docker run nginx demos." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.noelbundick.com/2017/08/03/fun-with-azure-container-instances/" />
+
+
+
+<meta property="article:published_time" content="2017-08-03T17:32:39&#43;00:00"/>
+
+<meta property="article:modified_time" content="2017-08-03T17:32:39&#43;00:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="Fun with Azure Container Instances">
+<meta itemprop="description" content="Fun with Azure Container Instances Azure Container Instances were recently announced, making it easy for developers to spin up a container on-demand without having to provision and maintain a VM or a cluster. It&rsquo;s been well received by the community, and there are already a ton of great resources to help you get started.
+But that&rsquo;s not what this post is about! Truthfully, I can only sit through so many canned docker run nginx demos.">
+
+
+<meta itemprop="datePublished" content="2017-08-03T17:32:39&#43;00:00" />
+<meta itemprop="dateModified" content="2017-08-03T17:32:39&#43;00:00" />
+<meta itemprop="wordCount" content="899">
+
+
+
+<meta itemprop="keywords" content="azure,containers,minecraft," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Fun with Azure Container Instances"/>
+<meta name="twitter:description" content="Fun with Azure Container Instances Azure Container Instances were recently announced, making it easy for developers to spin up a container on-demand without having to provision and maintain a VM or a cluster. It&rsquo;s been well received by the community, and there are already a ton of great resources to help you get started.
+But that&rsquo;s not what this post is about! Truthfully, I can only sit through so many canned docker run nginx demos."/>
+<meta name="twitter:site" content="@https://www.twitter.com/acanthamoeba"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://www.noelbundick.com/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+
+	
+		<a class="cta" href="https://www.noelbundick.com/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>Fun with Azure Container Instances</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        August 3, 2017
+        <br>
+        
+        
+            
+                <a href="https://www.noelbundick.com/tags/azure">azure</a>
+            
+                <a href="https://www.noelbundick.com/tags/containers">containers</a>
+            
+                <a href="https://www.noelbundick.com/tags/minecraft">minecraft</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<h1 id="fun-with-azure-container-instances">Fun with Azure Container Instances</h1>
+
+<p>Azure Container Instances were <a href="https://azure.microsoft.com/en-us/blog/announcing-azure-container-instances/">recently announced</a>, making it easy for developers to spin up a container on-demand without having to provision and maintain a VM or a cluster.  It&rsquo;s been well received by the community, and there are already a <a href="https://docs.microsoft.com/en-us/azure/container-instances/container-instances-quickstart">ton</a> <a href="https://channel9.msdn.com/Shows/Tuesdays-With-Corey/Tuesdays-with-Corey-Azure-Container-Instances">of</a> <a href="https://channel9.msdn.com/Shows/Azure-Friday/Using-Kubernetes-with-Azure-Container-Instances">great</a> <a href="https://channel9.msdn.com/Shows/Azure-Friday/Azure-Container-Instances">resources</a> to help you get started.</p>
+
+<h2 id="but-that-s-not-what-this-post-is-about">But that&rsquo;s not what this post is about!</h2>
+
+<p>Truthfully, I can only sit through so many canned <code>docker run nginx</code> demos. I want learning to be fun! I wondered, &ldquo;Can I run a Minecraft server on this thing?!&rdquo;</p>
+
+<p>{% youtube 4PLvdmifDSk?start=62 %}</p>
+
+<p>This is where I completely ignore Dr. Malcolm&rsquo;s excellent advice. I&rsquo;m going to stand on the shoulders of geniuses to accomplish something as fast as I can. The plan is to explore what I <em>could</em> do with Azure, and I have no intent to stop and think about whether or not I <em>should</em>.</p>
+
+<h2 id="step-1-make-it-work">Step 1 - Make it work</h2>
+
+<p>Minecraft in a container? Easy enough! I&rsquo;ll run the following commands in the <a href="https://docs.microsoft.com/en-us/azure/cloud-shell/overview">Azure Cloud Shell</a> to create a resource group and a container. I&rsquo;m going to use 2 CPU&rsquo;s and 2GB RAM just to make sure there are plenty of resources. Since billing is per-second and I&rsquo;m tearing everything down after I write this post, I&rsquo;m not worried about cost.</p>
+
+<script src="https://gist.github.com/noelbundick/9fa6e53a300e98e3af36d2a6ceea7f62.js?file=aci-minecraft.sh"></script>
+
+<h3 id="sample-output">Sample output</h3>
+
+<p>{% asset_img create-container.png &ldquo;Example output from &lsquo;az container create&rsquo;&rdquo; %}</p>
+
+<p>Cool, that gives me the IP address of the created container and shows the port mapping. Let&rsquo;s give it a try&hellip;</p>
+
+<p>{% asset_img minecraft-connect.png &ldquo;Connecting to an Azure Container Instance Minecraft server&rdquo; %}</p>
+
+<p>And then for the big test - does it actually work?</p>
+
+<p>{% asset_img minecraft-world1.png &ldquo;Happy little blocks&rdquo; %}</p>
+
+<p>Great success! I even got lucky &amp; got a cool world seed&hellip; except for that giant hole just a few steps away</p>
+
+<p>{% asset_img minecraft-world1-nope.png &ldquo;Hellevator&rdquo; %}</p>
+
+<p>Bunch of NOPE there! Moving on!</p>
+
+<blockquote>
+<p>Fun fact: If you mangle the names &amp; use 1 CPU, you can spin this up in the space of a <a href="https://twitter.com/acanthamoeba/status/890253868835102720">tweet</a>!</p>
+</blockquote>
+
+<h2 id="step-2-persisting-data">Step 2 - Persisting data</h2>
+
+<p>Going back to the output of the <code>az container create</code> command, I noticed some interesting bits - particularly the <code>volumeMounts</code> field. I want to mount a volume so I can spin down my container, but still keep my world when I bring up a new one to play later.</p>
+
+<p>How am I supposed to do that? Docs to the rescue! There&rsquo;s <a href="https://docs.microsoft.com/en-us/azure/container-instances/container-instances-mounting-azure-files-volume">already an article</a> on volume mounts. Hacking around with this a bit, I&rsquo;ve come up with 2 artifacts.</p>
+
+<h3 id="arm-template">ARM Template</h3>
+
+<p>Volumes aren&rsquo;t supported in the CLI yet, so I need to specify them in an ARM template.</p>
+
+<script src="https://gist.github.com/noelbundick/9fa6e53a300e98e3af36d2a6ceea7f62.js?file=template.json"></script>
+
+<blockquote>
+<p>If this is your first template and it looks like a big mess to you, then you&rsquo;re just like me! My {% post_link Learning-Azure-Resource-Manager-Introduction &ldquo;Intro to Azure Resource Manager Templates&rdquo; %} post might be a useful place to start learning</p>
+</blockquote>
+
+<h3 id="setup-script">Setup script</h3>
+
+<p>Cool, so we&rsquo;ve got a declarative way to create our container and point it at a Storage Account. I know what you&rsquo;re thinking - &ldquo;Noel, you forgot to create the storage account. Add it to the template!&rdquo;</p>
+
+<p>So here&rsquo;s the deal. I tried that and it doesn&rsquo;t work the way I hoped. The storage account gets created just fine, and the storageAccountKey gets properly set. Everything is wonderful&hellip; until you realize that the file share still needs to be created.</p>
+
+<p>Well that&rsquo;s considered a data-plane operation, not a management-plane operation. So you don&rsquo;t get to do that with ARM. So you need a script</p>
+
+<blockquote>
+<p>If you want to vote to change that - <a href="https://feedback.azure.com/forums/281804-azure-resource-manager/suggestions/9306108-let-me-define-preconfigured-blob-containers-table">click here to go to the issue on the feedback site</a></p>
+</blockquote>
+
+<script src="https://gist.github.com/noelbundick/9fa6e53a300e98e3af36d2a6ceea7f62.js?file=aci-minecraft-volume.sh"></script>
+
+<p>Walking through the script gives me the following</p>
+
+<p>{% asset_img create-container-2.png &ldquo;Many Bothan spies died to bring you this screenshot of my console window&rdquo; %}</p>
+
+<p>This time, I&rsquo;m going to connect to my world &amp; build something cool - that way, when I reconnect, I&rsquo;ll know that I&rsquo;m in the same world</p>
+
+<p>{% asset_img minecraft-world2.png &ldquo;The mighty dirt obelisk&rdquo; %}</p>
+
+<p><code>¯\_(ツ)_/¯</code> Look, I&rsquo;m a programmer, not an artist. Deal with it</p>
+
+<h2 id="step-3-making-sure-volumes-work">Step 3 - Making sure volumes work</h2>
+
+<p>The big test! I&rsquo;m going to delete my container and then fire it back up and we&rsquo;ll see if the obelisk stands, or if Azure is a big fat liar. I&rsquo;ll spare you the console screenshots this time</p>
+
+<pre><code class="language-bash"># Delete the container
+az container delete -n minecraft-server --resource-group minecraft-rg -y
+</code></pre>
+
+<p>{% asset_img connection-lost.png &ldquo;rm -rf minecraft&rdquo; %}</p>
+
+<p>Awesome, I broke it. Running another ARM template deployment should give me a new container, with a new IP address, connected to the same world data.</p>
+
+<pre><code class="language-bash"># Deploy the template again to get a new container
+az group deployment create -g minecraft-rg --template-uri https://aka.ms/aci-mcserver-template
+</code></pre>
+
+<p>{% asset_img minecraft-world3.png &ldquo;Pretty sunset. Much wow.&rdquo; %}</p>
+
+<p>Yaaasssssss! I&rsquo;ve got a persistent world and I&rsquo;m able to spin up &amp; down a containerized server on demand. I even got a nice virtual sunset out of the deal. Fun achieved!</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>You&rsquo;re probably not running Minecraft - you&rsquo;ll have your own apps. Or not - steal my code and have fun!  In any case, I hope this gives you some ideas on how to run applications that interact with external state on Azure Container Instances. It&rsquo;s still very new, and the tooling is very much a work-in-progress. But it definitely works and I think it&rsquo;s worth checking out!</p>
+
+<h3 id="links">Links</h3>
+
+<ul>
+<li><a href="https://gist.github.com/noelbundick/9fa6e53a300e98e3af36d2a6ceea7f62">Code for this post</a></li>
+<li><a href="https://docs.microsoft.com/en-us/azure/container-instances/container-instances-quickstart">Azure Container Instances Quickstart</a></li>
+</ul>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/acanthamoeba">
+    <img class="avatar" src="https://www.noelbundick.com/images/avatar.png">
+    <div>
+        <span class="dark">Noel Bundick</span>
+        <span>I&#39;m an blogger.</span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwww.noelbundick.com%2f2017%2f08%2f03%2ffun-with-azure-container-instances%2f - Fun%20with%20Azure%20Container%20Instances by @acanthamoeba"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "noelbundick" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/2018/01/21/frankenetes-running-the-kubernetes-control-plane-on-azure-container-instances/">Frankenetes! Running the Kubernetes control plane on Azure Container Instances<aside class="dates">Jan 21 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/11/13/my-on-demand-azure-dev-box/">My On-Demand Azure Dev Box<aside class="dates">Nov 13 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/08/07/quick-tip---deploying-arm-templates-from-a-url/">Quick tip - Deploying ARM Templates from a URL<aside class="dates">Aug 7 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/07/14/learning-azure-resource-manager---introduction/">Learning Azure Resource Manager - Introduction<aside class="dates">Jul 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/06/13/importing-certificates-to-key-vault/">Importing Certificates to Key Vault<aside class="dates">Jun 13 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/05/31/draft-on-azure-container-service/">Draft on Azure Container Service<aside class="dates">May 31 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/05/23/using-postman-with-azure-rest-apis/">Using Postman with Azure REST APIs<aside class="dates">May 23 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/05/14/bash-on-windows---azure-cloud-shell-quickstart/">Bash on Windows &#43; Azure Cloud Shell Quickstart<aside class="dates">May 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/05/13/supercharging-the-azure-cloud-shell/">Supercharging the Azure Cloud Shell<aside class="dates">May 13 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/05/12/service-fabric-cluster-quickstart/">Service Fabric Cluster Quickstart<aside class="dates">May 12 2017</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/noelbundick">
+        <i class="fa fa-github"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.linkedin.com/in/noelbundick">
+        <i class="fa fa-linkedin"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/acanthamoeba">
+        <i class="fa fa-twitter"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2018 Noel Bundick
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://www.noelbundick.com/js/main.js"></script>
+<script src="https://www.noelbundick.com/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-96602440-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+</body>
+</html>

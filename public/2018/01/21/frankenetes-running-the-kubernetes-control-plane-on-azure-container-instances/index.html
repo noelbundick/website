@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Noel Bundick">
+<meta name="description" content="Describe your website">
+<meta name="generator" content="Hugo 0.32.2" />
+<title>Frankenetes! Running the Kubernetes control plane on Azure Container Instances</title>
+<link rel="shortcut icon" href="https://www.noelbundick.com/images/favicon.ico">
+<link rel="stylesheet" href="https://www.noelbundick.com/css/style.css">
+<link rel="stylesheet" href="https://www.noelbundick.com/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+
+
+<link href="https://www.noelbundick.com/index.xml" rel="alternate" type="application/rss+xml" title="Noel Bundick" />
+
+
+<meta property="og:title" content="Frankenetes! Running the Kubernetes control plane on Azure Container Instances" />
+<meta property="og:description" content="I&rsquo;ve been learning more about Kubernetes lately - both how to use it, and how it works. I recently took the time to run through Kelsey Hightower&rsquo;s Kubernetes the Hard Way, specifically, the Azure version by Ivan Fioravanti. In addition to learning a lot, it sparked some interesting ideas on my flight home&hellip;
+Ignoring all the “this is dumb, whyyyy” reasons - in theory I should be able to spin up k8s master etcd/apiserver/controllermanager in Azure Container Instances w/ public IP’s no?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.noelbundick.com/2018/01/21/frankenetes-running-the-kubernetes-control-plane-on-azure-container-instances/" />
+
+
+
+<meta property="article:published_time" content="2018-01-21T23:02:43&#43;00:00"/>
+
+<meta property="article:modified_time" content="2018-01-21T23:02:43&#43;00:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="Frankenetes! Running the Kubernetes control plane on Azure Container Instances">
+<meta itemprop="description" content="I&rsquo;ve been learning more about Kubernetes lately - both how to use it, and how it works. I recently took the time to run through Kelsey Hightower&rsquo;s Kubernetes the Hard Way, specifically, the Azure version by Ivan Fioravanti. In addition to learning a lot, it sparked some interesting ideas on my flight home&hellip;
+Ignoring all the “this is dumb, whyyyy” reasons - in theory I should be able to spin up k8s master etcd/apiserver/controllermanager in Azure Container Instances w/ public IP’s no?">
+
+
+<meta itemprop="datePublished" content="2018-01-21T23:02:43&#43;00:00" />
+<meta itemprop="dateModified" content="2018-01-21T23:02:43&#43;00:00" />
+<meta itemprop="wordCount" content="1534">
+
+
+
+<meta itemprop="keywords" content="azure,kubernetes,aci," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Frankenetes! Running the Kubernetes control plane on Azure Container Instances"/>
+<meta name="twitter:description" content="I&rsquo;ve been learning more about Kubernetes lately - both how to use it, and how it works. I recently took the time to run through Kelsey Hightower&rsquo;s Kubernetes the Hard Way, specifically, the Azure version by Ivan Fioravanti. In addition to learning a lot, it sparked some interesting ideas on my flight home&hellip;
+Ignoring all the “this is dumb, whyyyy” reasons - in theory I should be able to spin up k8s master etcd/apiserver/controllermanager in Azure Container Instances w/ public IP’s no?"/>
+<meta name="twitter:site" content="@https://www.twitter.com/acanthamoeba"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://www.noelbundick.com/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+
+	
+		<a class="cta" href="https://www.noelbundick.com/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>Frankenetes! Running the Kubernetes control plane on Azure Container Instances</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        January 21, 2018
+        <br>
+        
+        
+            
+                <a href="https://www.noelbundick.com/tags/azure">azure</a>
+            
+                <a href="https://www.noelbundick.com/tags/kubernetes">kubernetes</a>
+            
+                <a href="https://www.noelbundick.com/tags/aci">aci</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>I&rsquo;ve been learning more about Kubernetes lately - both how to use it, and how it works. I recently took the time to run through Kelsey Hightower&rsquo;s <a href="https://github.com/kelseyhightower/kubernetes-the-hard-way">Kubernetes the Hard Way</a>, specifically, the <a href="https://github.com/ivanfioravanti/kubernetes-the-hard-way-on-azure">Azure version</a> by Ivan Fioravanti. In addition to learning a lot, it sparked some interesting ideas on my flight home&hellip;</p>
+
+<p><blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Ignoring all the “this is dumb, whyyyy” reasons - in theory I should be able to spin up k8s master etcd/apiserver/controllermanager in Azure Container Instances w/ public IP’s no?</p>&mdash; Noel Bundick (@acanthamoeba) <a href="https://twitter.com/acanthamoeba/status/954435808332861440?ref_src=twsrc%5Etfw">January 19, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>My thought was that these are just apps, processes, binaries that run with flags - boring. Boring is good! They all have prebuilt images that let you run them as containers. And hey&hellip; <a href="https://docs.microsoft.com/en-us/azure/container-instances/">Azure Container Instances</a> lets me run containers without VM&rsquo;s. All the hard work was done; I wanted to see if I could glue it together to create a &ldquo;virtual Kubernetes cluster&rdquo;&hellip;</p>
+
+<p>But I also knew there were already plenty of <a href="https://github.com/Azure/acs-engine">sane</a> <a href="https://docs.microsoft.com/en-us/azure/aks/">ways</a> to run a Kubernetes cluster on Azure. And this felt like I was cobbling together parts from all over&hellip; and that if anyone did this in production, it could turn into a monster! So I decided to give my monstrous creation a name.</p>
+
+<p>{% asset_img frankenstein.jpg &ldquo;Boris Karloff as the Kubernetes, I mean Frankenstein monster&rdquo; %}</p>
+
+<blockquote>
+<p>Yes, I know that&rsquo;s actually Frankenstein&rsquo;s monster. Don&rsquo;t worry, your nits have been recorded.</p>
+</blockquote>
+
+<p>Frankenetes! I&rsquo;ll walk you through what I did and some of the gotchas, so you can run your own virtual Kubernetes cluster on ACI</p>
+
+<h2 id="overview">Overview</h2>
+
+<p>The Kubernetes control plane consists of a few moving parts
+* <a href="https://coreos.com/etcd/">etcd</a>: the distributed key/value store that holds cluster data
+* apiserver: REST API that validates &amp; controls all reads/writes to etcd
+* controller manager: runs the core control loops of Kubernetes
+* scheduler: updates pods in the apiserver &amp; assigns them to nodes</p>
+
+<p>I figured once those were in place, I should be able to connect nodes to my cluster and schedule workloads.</p>
+
+<blockquote>
+<p>This is a total hack, so I didn&rsquo;t secure <strong>anything</strong>. I don&rsquo;t see a reason why you wouldn&rsquo;t be able to secure all of this with TLS - it just wasn&rsquo;t the initial goal.</p>
+</blockquote>
+
+<h2 id="prerequisites-azure">Prerequisites: Azure</h2>
+
+<p>I set up a couple of things in Azure to get started. A resource group to hold everything, and a storage account for all of my persistent data. Right now, it&rsquo;s mainly etcd data, but in the future, I can also store certs, logs, and so on.</p>
+
+<pre><code class="language-shell">AZURE_RESOURCE_GROUP=frankenetes
+
+# As of 2.0.25, you have to use 'export' for it to automagically set your storage acct
+# https://github.com/Azure/azure-cli/issues/5358
+export AZURE_STORAGE_ACCOUNT=frankenetes
+
+az group create -n $AZURE_RESOURCE_GROUP -l eastus
+az storage account create -n $AZURE_STORAGE_ACCOUNT -g $AZURE_RESOURCE_GROUP
+
+AZURE_STORAGE_KEY=$(az storage account keys list -n $AZURE_STORAGE_ACCOUNT -g $AZURE_RESOURCE_GROUP --query '[0].value' -o tsv)
+</code></pre>
+
+<p>{% asset_img young_frankenstein.jpg &ldquo;Maybe I should have named it Abby Normal&rdquo; %}</p>
+
+<h2 id="etcd">etcd</h2>
+
+<p>As the backing data store, etcd needed to come up first. Kubernetes the Hard Way had most of the flags I needed, and the help for <code>az container create</code> gave me everything I needed to map my <code>data-dir</code> to an Azure File share.</p>
+
+<h3 id="write-ahead-log">Write ahead log</h3>
+
+<p>Unfortunately, I ran into some unusual issues on startup. My limited understanding is that etcd takes a lock on the write ahead log directory, then renames a temp file to boot up. This works fine inside the container, but when mapped to Azure Files, it can&rsquo;t perform the rename (due to the lock), fails, and then the container gets stuck in a crash loop. Setting the <code>wal-dir</code> path to something inside the container resolves the issue, but since the log no longer outlives the container, the data store can suffer data loss.</p>
+
+<blockquote>
+<p>This could likely be solved if ACI supported additional volume types, etcd was patched to work around the locking issue, etc. Like I said, this is a hack&hellip;</p>
+</blockquote>
+
+<h3 id="dns">DNS</h3>
+
+<p>My next issue was the <code>advertise-client-urls</code>. ACI gave me a public IP from, but it was dynamically generated and I wasn&rsquo;t able to specify it or know it until <strong>after</strong> the container group had been created. I needed another level of abstraction - DNS to the rescue! I&rsquo;m listening on all addresses inside the container, and then I configured DNS to let the apiserver resolve my etcd host from outside the container.</p>
+
+<pre><code class="language-shell"># Create an Azure File share to hold cluster data
+az storage share create -n etcd
+
+#WARNING! This isn't truly useful until I fix the write ahead log &amp; secure the cluster
+#TODO: figure out why I get &quot;create wal error: rename /etcd/data/member/wal.tmp /etcd/data/member/wal: permission denied&quot; when --wal-dir is not set
+az container create -g $AZURE_RESOURCE_GROUP \
+  --name etcd \
+  --image quay.io/coreos/etcd:v3.2.8 \
+  --azure-file-volume-account-name $AZURE_STORAGE_ACCOUNT \
+  --azure-file-volume-account-key $AZURE_STORAGE_KEY \
+  --azure-file-volume-share-name etcd \
+  --azure-file-volume-mount-path /etcd \
+  --ports 2379 2389 \
+  --ip-address public \
+  --command-line '/usr/local/bin/etcd --name=aci --data-dir=/etcd/data --wal-dir=/etcd-wal --listen-client-urls=http://0.0.0.0:2379 --advertise-client-urls=http://frankenetes-etcd.noelbundick.com:2379'
+
+# Grab the ipAddress.ip property &amp; update the A record for 'frankenetes-etcd.noelbundick.com'
+</code></pre>
+
+<p>And here&rsquo;s where I updated my DNS on CloudFlare</p>
+
+<p>{% asset_img frankenetes-etcd-dns.png &ldquo;Adding the etcd record in CloudFlare DNS&rdquo; %}</p>
+
+<p>Finally, I verified everything by running a few etcdctl commands against the remote <code>frankenetes-etcd.noelbundick.com:2379</code> host</p>
+
+<h2 id="apiserver">apiserver</h2>
+
+<p>Next up - the apiserver. I used the latest stable <a href="https://github.com/kubernetes/kubernetes/tree/master/cluster/images/hyperkube">hyperkube</a> image to run the API server, and connected to etcd using the DNS name.</p>
+
+<pre><code class="language-shell"># Create a share to hold logs/etc
+az storage share create -n apiserver
+
+az container create -g $AZURE_RESOURCE_GROUP \
+  --name apiserver \
+  --image gcr.io/google-containers/hyperkube-amd64:v1.9.2 \
+  --azure-file-volume-account-name $AZURE_STORAGE_ACCOUNT \
+  --azure-file-volume-account-key $AZURE_STORAGE_KEY \
+  --azure-file-volume-share-name apiserver \
+  --azure-file-volume-mount-path /apiserverdata \
+  --ports 6445 \
+  --ip-address public \
+  --command-line '/apiserver  --advertise-address=0.0.0.0 --allow-privileged=true --apiserver-count=1 --audit-log-maxage=30 --audit-log-maxbackup=3 --audit-log-maxsize=100 --audit-log-path=/apiserverdata/log/audit.log --authorization-mode=Node,RBAC --bind-address=0.0.0.0 --etcd-servers=http://frankenetes-etcd.noelbundick.com:2379 --runtime-config=api/all --v=2 --runtime-config=admissionregistration.k8s.io/v1alpha1 --enable-swagger-ui=true --event-ttl=1h --service-node-port-range=30000-32767 --insecure-bind-address=0.0.0.0 --insecure-port 6445'
+
+
+# Grab the ipAddress.ip property &amp; update the A record for 'frankenetes-apiserver.noelbundick.com'
+</code></pre>
+
+<blockquote>
+<p>Running on 6445 instead of 6443 was me &ldquo;securing&rdquo; my cluster by not using a default port. Security through obscurity is dumb. Don&rsquo;t do what I did for anything that matters</p>
+</blockquote>
+
+<p>And one more DNS update for the apiserver</p>
+
+<p>{% asset_img frankenetes-apiserver-dns.png &ldquo;Adding the apiserver record in CloudFlare DNS&rdquo; %}</p>
+
+<p>To verify, I hit the apiserver endpoint by running <code>curl http://frankenetes-apiserver.noelbundick.com:6445/version</code></p>
+
+<h2 id="controller-manager">Controller manager</h2>
+
+<p>Cool! The hard part was done. Smooth sailing from here on out. The controller manager was pretty straightforward - I just pointed it at the apiserver. No certs, no problems!</p>
+
+<pre><code class="language-shell">az container create -g $AZURE_RESOURCE_GROUP \
+  --name controllermanager \
+  --image gcr.io/google-containers/hyperkube-amd64:v1.9.2 \
+  --command-line '/controller-manager --address=0.0.0.0 --cluster-cidr=10.200.0.0/16 --cluster-name=kubernetes --leader-elect=true --master=http://frankenetes-apiserver.noelbundick.com:6445 --service-cluster-ip-range=10.32.0.0/24 --v=2'
+</code></pre>
+
+<h2 id="scheduler">Scheduler</h2>
+
+<p>Same story for the scheduler - it just needs to know where the apiserver is. Around this point, I really started to appreciate how modular the Kubernetes core components were.</p>
+
+<pre><code class="language-shell">az container create -g $AZURE_RESOURCE_GROUP \
+  --name scheduler \
+  --image gcr.io/google-containers/hyperkube-amd64:v1.9.2 \
+  --command-line '/scheduler --leader-elect=true --master=http://frankenetes-apiserver.noelbundick.com:6445 --v=2'
+</code></pre>
+
+<h2 id="kubeconfig">kubeconfig</h2>
+
+<p>I needed a way to connect to my cobbled together Kubernetes cluster (still with no nodes). I used the following to set up my kubeconfig and verify everything was working.</p>
+
+<pre><code class="language-shell"># Set up cluster/context info in a standalone file
+kubectl config set-cluster frankenetes --server=http://frankenetes-apiserver.noelbundick.com:6445 --kubeconfig=frankenetes.kubeconfig
+kubectl config set-context default --cluster=frankenetes --kubeconfig=frankenetes.kubeconfig
+kubectl config use-context default --kubeconfig=frankenetes.kubeconfig
+
+# Use the kubeconfig &amp; cross your fingers!
+export KUBECONFIG=frankenetes.kubeconfig
+kubectl version
+kubectl api-versions
+</code></pre>
+
+<p>{% asset_img young_frankenstein_2.jpg &ldquo;Frankenetes is alive&rdquo; %}</p>
+
+<h2 id="nodes">Nodes!</h2>
+
+<p>I ran through the manual steps in Kubernetes the Hard Way on Azure to create a single node, stripping out all the TLS bits along the way, and substituting 1.9.2 for 1.8.0.</p>
+
+<p>Relevant sections:
+* <a href="https://github.com/ivanfioravanti/kubernetes-the-hard-way-on-azure/blob/master/docs/03-compute-resources.md">Compute resources</a> - Virtual Network, Firewall Rules, Kubernetes Workers
+* <a href="https://github.com/ivanfioravanti/kubernetes-the-hard-way-on-azure/blob/master/docs/09-bootstrapping-kubernetes-workers.md">Bootstrapping the Kubernetes Worker Nodes</a></p>
+
+<p>After all was said &amp; done, I was able to run pods on my node, all being controlled by Frankenetes running in ACI!</p>
+
+<p>{% asset_img pods.jpg &ldquo;Lots of work to make it useful, but it does work!&rdquo; %}</p>
+
+<h2 id="what-s-next">What&rsquo;s next?</h2>
+
+<p>Not sure! This was a learning project to understand more about how the Kubernetes control plane really worked. It doesn&rsquo;t seem mysterious anymore. I feel like I can make it do what I want now. Here are some of my ideas so far. If you&rsquo;ve got more, please <a href="https://twitter.com/acanthamoeba">hit me up on Twitter</a>!</p>
+
+<h3 id="tls">TLS</h3>
+
+<p>This is horribly insecure. Wide open. I should be able to use the DNS names to generate proper certs and secure everything. And then, of course, automate it all away.</p>
+
+<h3 id="dns-1">DNS</h3>
+
+<p>I want to automate all the DNS steps using <a href="https://docs.microsoft.com/en-us/azure/event-grid/">Azure Event Grid</a>. My plan is to create the container group with a tag containing my desired DNS name (needs a PR for azure-cli!) Then, I can subscribe to Azure Resource Manager events and fire off an Azure Function that will take care of updating my DNS records based on the tag and the IP address that was provisioned. Think of it as a kind of Frankenstein version of kube-dns!</p>
+
+<h3 id="virtual-kubelet">Virtual Kubelet</h3>
+
+<p>Why stop at a virtual master control plane when I could have virtual nodes! I want to wire up <a href="https://github.com/virtual-kubelet/virtual-kubelet">virtual-kubelet</a>. If that works, I could interact with my virtual cluster with my familiar Kubernetes toolkit (kubectl, kubectx, kubens, etc), but then <strong>all</strong> of my workloads would run on ACI. Not sure that&rsquo;s a useful concept, but hey - I&rsquo;ll give it a try and see if anyone likes it!</p>
+
+<p>{% asset_img young_frankenstein_3.gif &ldquo;Me, when I got everything up and running&rdquo; %}</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/acanthamoeba">
+    <img class="avatar" src="https://www.noelbundick.com/images/avatar.png">
+    <div>
+        <span class="dark">Noel Bundick</span>
+        <span>I&#39;m an blogger.</span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwww.noelbundick.com%2f2018%2f01%2f21%2ffrankenetes-running-the-kubernetes-control-plane-on-azure-container-instances%2f - Frankenetes%21%20Running%20the%20Kubernetes%20control%20plane%20on%20Azure%20Container%20Instances by @acanthamoeba"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "noelbundick" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/2017/11/13/my-on-demand-azure-dev-box/">My On-Demand Azure Dev Box<aside class="dates">Nov 13 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/08/07/quick-tip---deploying-arm-templates-from-a-url/">Quick tip - Deploying ARM Templates from a URL<aside class="dates">Aug 7 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/08/03/fun-with-azure-container-instances/">Fun with Azure Container Instances<aside class="dates">Aug 3 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/07/14/learning-azure-resource-manager---introduction/">Learning Azure Resource Manager - Introduction<aside class="dates">Jul 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/06/13/importing-certificates-to-key-vault/">Importing Certificates to Key Vault<aside class="dates">Jun 13 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/05/31/draft-on-azure-container-service/">Draft on Azure Container Service<aside class="dates">May 31 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/05/23/using-postman-with-azure-rest-apis/">Using Postman with Azure REST APIs<aside class="dates">May 23 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/05/14/bash-on-windows---azure-cloud-shell-quickstart/">Bash on Windows &#43; Azure Cloud Shell Quickstart<aside class="dates">May 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/05/13/supercharging-the-azure-cloud-shell/">Supercharging the Azure Cloud Shell<aside class="dates">May 13 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/2017/05/12/service-fabric-cluster-quickstart/">Service Fabric Cluster Quickstart<aside class="dates">May 12 2017</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/noelbundick">
+        <i class="fa fa-github"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.linkedin.com/in/noelbundick">
+        <i class="fa fa-linkedin"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/acanthamoeba">
+        <i class="fa fa-twitter"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2018 Noel Bundick
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://www.noelbundick.com/js/main.js"></script>
+<script src="https://www.noelbundick.com/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-96602440-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+</body>
+</html>
