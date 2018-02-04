@@ -3,11 +3,27 @@ baseurl = "https://www.noelbundick.com/"
 languageCode = "en-us"
 title = "Noel Bundick"
 theme = "hugo-cactus-theme"
-
+rssLink = "atom.xml"
 # Enter your tracking code to enable Google Analytics
 googleAnalytics = "UA-96602440-1"
 # Disable comments by leaving disqusShortname empty
 disqusShortname = "noelbundick"
+
+[mediaTypes]
+[mediaTypes."application/atom"]
+  suffix = "xml"
+
+[outputFormats]
+[outputFormats.Atom]
+  mediaType = "application/atom"
+  baseName = "atom"
+  isPlainText = false
+
+[outputs]
+  home = ["HTML", "Atom"]
+
+[author]
+  name = "Noel Bundick"
 
 [permalinks]
   posts = "/:year/:month/:day/:title/"
