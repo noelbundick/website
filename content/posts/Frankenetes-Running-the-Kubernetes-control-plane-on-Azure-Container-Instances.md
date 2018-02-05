@@ -5,6 +5,8 @@ tags:
   - kubernetes
   - aci
 date: 2018-01-21 23:02:43
+aliases:
+  - /2018/01/21/Frankenetes-Running-the-Kubernetes-control-plane-on-Azure-Container-Instances/
 ---
 
 

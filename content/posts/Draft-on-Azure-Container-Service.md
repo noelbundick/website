@@ -5,6 +5,8 @@ tags:
   - kubernetes
 date: 2017-05-31 12:22:12
 todo: Update with https://medium.com/@deeeet/draft-on-google-container-engine-f806aa42875c
+aliases:
+  - /2017/05/31/Draft-on-Azure-Container-Service/
 ---
 
 

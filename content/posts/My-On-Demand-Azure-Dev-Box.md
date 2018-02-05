@@ -3,6 +3,8 @@ title: My On-Demand Azure Dev Box
 tags:
   - azure
 date: 2017-11-13 19:25:38
+aliases:
+  - /2017/11/13/My-On-Demand-Azure-Dev-Box/
 ---
 
 

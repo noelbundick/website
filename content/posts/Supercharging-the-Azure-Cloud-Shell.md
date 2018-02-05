@@ -4,6 +4,8 @@ tags:
   - azure
   - bash
 date: 2017-05-13 14:36:02
+aliases:
+  - /2017/05/13/Supercharging-the-Azure-Cloud-Shell/
 ---
 
 

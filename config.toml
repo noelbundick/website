@@ -25,8 +25,8 @@ disqusShortname = "noelbundick"
 [author]
   name = "Noel Bundick"
 
-[permalinks]
-  posts = "/:year/:month/:day/:title/"
+#[permalinks]
+#  posts = "/:year/:month/:day/:title/"
 
 [params]
 	name = "Noel Bundick"

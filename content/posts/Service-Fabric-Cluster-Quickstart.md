@@ -4,6 +4,8 @@ tags:
   - azure
   - service fabric
 date: 2017-05-12 12:22:27
+aliases:
+  - /2017/05/12/Service-Fabric-Cluster-Quickstart/
 ---
 
 

@@ -5,6 +5,8 @@ tags:
   - containers
   - minecraft
 date: 2017-08-03 17:32:39
+aliases:
+  - /2017/08/03/Fun-with-Azure-Container-Instances/
 ---
 
 
