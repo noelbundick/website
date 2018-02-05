@@ -1,5 +1,5 @@
 # Site settings
-baseurl = "https://www.noelbundick.com/"
+baseurl = "/"
 languageCode = "en-us"
 title = "Noel Bundick"
 theme = "hugo-cactus-theme"
@@ -14,13 +14,10 @@ disqusShortname = "noelbundick"
   suffix = "xml"
 
 [outputFormats]
-[outputFormats.Atom]
+[outputFormats.RSS]
   mediaType = "application/atom"
   baseName = "atom"
   isPlainText = false
-
-[outputs]
-  home = ["HTML", "Atom"]
 
 [author]
   name = "Noel Bundick"
