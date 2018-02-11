@@ -59,7 +59,7 @@ kubectl get services --namespace kube-system -w nginx-ingress-nginx-ingress-cont
 
 My DNS is hosted on Cloudflare - I added the following
 
-{% asset_img wildcard-dns.png "Wildcard DNS for Draft apps" %}
+{{% img "wildcard-dns.png" "Wildcard DNS for Draft apps" %}}
 
 So that's Kubernetes, Azure Container Service, and Helm. Last step - Draft itself.
 

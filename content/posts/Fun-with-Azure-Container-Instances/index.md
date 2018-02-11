@@ -18,7 +18,7 @@ Azure Container Instances were [recently announced](https://azure.microsoft.com/
 
 Truthfully, I can only sit through so many canned `docker run nginx` demos. I want learning to be fun! I wondered, "Can I run a Minecraft server on this thing?!"
 
-{% youtube 4PLvdmifDSk?start=62 %}
+{{< youtube "4PLvdmifDSk?start=62" >}}
 
 This is where I completely ignore Dr. Malcolm's excellent advice. I'm going to stand on the shoulders of geniuses to accomplish something as fast as I can. The plan is to explore what I *could* do with Azure, and I have no intent to stop and think about whether or not I *should*.
 
@@ -30,19 +30,19 @@ Minecraft in a container? Easy enough! I'll run the following commands in the [A
 
 ### Sample output
 
-{% asset_img create-container.png "Example output from 'az container create'" %}
+{{% img "create-container.png" "Example output from 'az container create'" %}}
 
 Cool, that gives me the IP address of the created container and shows the port mapping. Let's give it a try...
 
-{% asset_img minecraft-connect.png "Connecting to an Azure Container Instance Minecraft server" %}
+{{% img "minecraft-connect.png" "Connecting to an Azure Container Instance Minecraft server" %}}
 
 And then for the big test - does it actually work?
 
-{% asset_img minecraft-world1.png "Happy little blocks" %}
+{{% img "minecraft-world1.png" "Happy little blocks" %}}
 
 Great success! I even got lucky & got a cool world seed... except for that giant hole just a few steps away
 
-{% asset_img minecraft-world1-nope.png "Hellevator" %}
+{{% img "minecraft-world1-nope.png" "Hellevator" %}}
 
 Bunch of NOPE there! Moving on!
 
@@ -60,7 +60,7 @@ Volumes aren't supported in the CLI yet, so I need to specify them in an ARM tem
 
 <script src="https://gist.github.com/noelbundick/9fa6e53a300e98e3af36d2a6ceea7f62.js?file=template.json"></script>
 
-> If this is your first template and it looks like a big mess to you, then you're just like me! My {% post_link Learning-Azure-Resource-Manager-Introduction "Intro to Azure Resource Manager Templates" %} post might be a useful place to start learning
+> If this is your first template and it looks like a big mess to you, then you're just like me! My [Intro to Azure Resource Manager Templates]({{< relref "Learning-Azure-Resource-Manager-Introduction" >}}) post might be a useful place to start learning
 
 ### Setup script
 
@@ -76,11 +76,11 @@ Well that's considered a data-plane operation, not a management-plane operation.
 
 Walking through the script gives me the following
 
-{% asset_img create-container-2.png "Many Bothan spies died to bring you this screenshot of my console window" %}
+{{% img "create-container-2.png" "Many Bothan spies died to bring you this screenshot of my console window" %}}
 
 This time, I'm going to connect to my world & build something cool - that way, when I reconnect, I'll know that I'm in the same world
 
-{% asset_img minecraft-world2.png "The mighty dirt obelisk" %}
+{{% img "minecraft-world2.png" "The mighty dirt obelisk" %}}
 
 `¯\_(ツ)_/¯` Look, I'm a programmer, not an artist. Deal with it 
 
@@ -93,7 +93,7 @@ The big test! I'm going to delete my container and then fire it back up and we'l
 az container delete -n minecraft-server --resource-group minecraft-rg -y
 ```
 
-{% asset_img connection-lost.png "rm -rf minecraft" %}
+{{% img "connection-lost.png" "rm -rf minecraft" %}}
 
 Awesome, I broke it. Running another ARM template deployment should give me a new container, with a new IP address, connected to the same world data.
 
@@ -102,7 +102,7 @@ Awesome, I broke it. Running another ARM template deployment should give me a ne
 az group deployment create -g minecraft-rg --template-uri https://aka.ms/aci-mcserver-template
 ```
 
-{% asset_img minecraft-world3.png "Pretty sunset. Much wow." %}
+{{% img "minecraft-world3.png" "Pretty sunset. Much wow." %}}
 
 Yaaasssssss! I've got a persistent world and I'm able to spin up & down a containerized server on demand. I even got a nice virtual sunset out of the deal. Fun achieved!
 

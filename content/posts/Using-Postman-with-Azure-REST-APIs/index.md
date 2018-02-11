@@ -44,19 +44,19 @@ The app (Postman) needs some permissions to be able to access Azure on your beha
 
 1\. Go to Required Permissions 
 
-{% asset_img aad-application.png "Go to Required Permissions" %}
+{{% img "aad-application.png" "Go to Required Permissions" %}}
 
 2\. Add a Required Permission
 
-{% asset_img aad-required-permissions.png "Click the Add button" %}
+{{% img "aad-required-permissions.png" "Click the Add button" %}}
 
 3\. Select 'Windows Azure Service Management API'
 
-{% asset_img aad-api-azure-service-management.png "Select Windows Azure Service Management API" %}
+{{% img "aad-api-azure-service-management.png" "Select Windows Azure Service Management API" %}}
 
 4\. Select 'Access Azure Service Management as organization users (preview)'
 
-{% asset_img aad-delegated-permissions.png "Enable delegated permissions" %}
+{{% img "aad-delegated-permissions.png" "Enable delegated permissions" %}}
 
 5\. Done!
 
@@ -66,27 +66,27 @@ We'll be using Postman's native OAuth2 functionality here to get an OAuth token 
 
 1\. Visit the Authorization tab and select `OAuth 2.0`
 
-{% asset_img postman-authorization.png "Postman Authorization tab" %}
+{{% img "postman-authorization.png" "Postman Authorization tab" %}}
 
 2\. Hit `Get New Access Token`
 
-{% asset_img postman-get-access-token.png "Select OAuth2" %}
+{{% img "postman-get-access-token.png" "Select OAuth2" %}}
 
 3\. Enter the values from the script output and make sure you're using the `Authorization Code` grant type
 
-{% asset_img postman-oauth2-config.png "Use the output values from the script" %}
+{{% img "postman-oauth2-config.png" "Use the output values from the script" %}}
 
 4\. `Request Token`! You'll be prompted to login with your credentials. On your first time, you'll also need to authorize your app
 
-{% asset_img postman-initial-grant.png "You'll see something like this when you get your first token" %}
+{{% img "postman-initial-grant.png" "You'll see something like this when you get your first token" %}}
 
 5\. You'll see a new token in your list of Existing Tokens. Select it & hit `Use Token`. This will set the Authorization header of your current request to use the Bearer token you just got from AAD
 
-{% asset_img postman-tokens.png "Look at that shiny token!" %}
+{{% img "postman-tokens.png" "Look at that shiny token!" %}}
 
 6\. All done! You've got a proper Authorization header, and can now make requests against Azure Resource Manager. When your token expires, repeat steps 4 and 5 to get a new token.
 
-{% asset_img postman-bearer-token.png "A fully armed and operational Authorization token" %}
+{{% img "postman-bearer-token.png" "A fully armed and operational Authorization token" %}}
 
 # Next steps
 

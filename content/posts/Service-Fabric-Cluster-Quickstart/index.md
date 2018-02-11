@@ -126,23 +126,23 @@ Cluster      : AvailableClusterVersions :
 
 Let's take a quick trip to the [Azure Portal](https://portal.azure.com) and look at what was created. I'm going to use the search bar at the top of the portal to look at my newly created Resource Group
 
-{% asset_img portal-search.png "Quick find using portal search" %}
+{{% img "portal-search.png" "Quick find using portal search" %}}
 
 Selecting the resource group, you'll see something like the following
 
-{% asset_img portal-resources.png "Glad I didn't have to create all those resources by hand!" %}
+{{% img "portal-resources.png" "Glad I didn't have to create all those resources by hand!" %}}
 
 That's a lot going on to support your cluster. You've got a Key Vault, a Virtual Network, a Load Balancer with a public IP, several Storage Accounts, a VM Scale Set, and finally, your Service Fabric cluster itself. Not bad for a 1-line command! 
 
 Select the cluster resource to see some more details
 
-{% asset_img portal-cluster.png "Service Fabric cluster details" %}
+{{% img "portal-cluster.png" "Service Fabric cluster details" %}}
 
 5 VM's and a couple of endpoints. So far, so good! In the past it was pretty easy to get to this point with an Unsecure cluster, but then anyone on the Internet could access your cluster. The good news is that the new Service Fabric cmdlets are secure by default.
 
 Click into Security in the left menu
 
-{% asset_img portal-security.png "Yes! This cluster is secure" %}
+{{% img "portal-security.png" "Yes! This cluster is secure" %}}
 
 Great! There's a Primary certificate. This cert will be used to grant access to inspect, deploy, and remove applications on the cluster.
 
@@ -162,11 +162,11 @@ Import-PfxCertificate -FilePath C:\temp\trash12320170512104014.pfx -Password $pa
 
 Now it's time to access Service Fabric Explorer running on your cluster. Get your cluster management endpoint either from the Azure Portal, or from the `ManagementEndpoint` property in the cmdlet output, and visit it in a browser.
 
-{% asset_img sfexplorer-certwarning.png "Certificate warning - my computer doesn't trust self-signed certs" %}
+{{% img "sfexplorer-certwarning.png" "Certificate warning - my computer doesn't trust self-signed certs" %}}
 
 Uh oh! Don't worry, this is expected. Since you didn't specify a cert for the cluster, Key Vault generated a self-signed one for you. Accept the warnings and proceed. When prompted for a cert, select the one with your cluster's name
 
-{% asset_img sfexplorer-index.png "Service Fabric Explorer" %}
+{{% img "sfexplorer-index.png" "Service Fabric Explorer" %}}
 
 Great success! Expanding Nodes and System, you can see your five nodes and the various built-in services that Service Fabric uses to keep everything up and running. At this point, you're ready to use Visual Studio, PowerShell, or the tool of your choice to deploy and manage applications on your secure cluster.
 

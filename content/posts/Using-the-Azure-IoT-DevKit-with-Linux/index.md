@@ -7,11 +7,13 @@ tags:
 date: 2018-01-27 20:22:46
 aliases:
   - /2018/01/27/Using-the-Azure-IoT-DevKit-with-Linux/
+resources:
+  - src: "*.png"
 ---
 
 For a while now, I've had an interest in playing with IoT devices to do interesting things. I consider myself a novice (at best) with electronic components, so I wanted an all-in-one unit to get started. I recently borrowed an [Azure IoT DevKit](https://microsoft.github.io/azure-iot-developer-kit/), which has lots of interesting little sensors on board, and a lot of getting started resources.
 
-{% asset_img AZ1366.png "Look at all the components that I DIDNT have to solder together!" %}
+{{{% img "AZ1366.png" "Look at all the components that I DIDN'T have to solder together!" %}}}
 
 > More precisely, this is a [MXChip AZ1366](http://mxchip.com/az3166)
 
@@ -43,7 +45,7 @@ Use `Ctrl+,` to open your `settings.json`, and add the following lines (use your
 
 Use `Ctrl+Shift+P` to open the command palette, type and select **Arduino: Board Manager**. Search for `AZ3166` and install the latest version
 
-{% asset_img select-az3166.png "Install the latest version for AZ3166" %} 
+{{% img "select-az3166.png" "Install the latest version for AZ3166" %}} 
 
 ## Linux configuration
 
@@ -119,19 +121,19 @@ if (OS_PLAT === 'win32') {
 
 In a new VS Code window, use `Ctrl+Shift+P` and select **Arduino: Board Manager** again. In the bottom right task, bar, you'll see some options to `<Select Board Type>` and `<Select Serial Port>`
 
-{% asset_img select-board-type.png "Select the board type in the VS Code status bar" %} 
+{{% img "select-board-type.png" "Select the board type in the VS Code status bar" %}} 
 
 Select the `MXCHIP AZ3166` board
 
-{% asset_img select-board.png "Choosing the board" %} 
+{{% img "select-board.png" "Choosing the board" %}} 
 
 Select the serial port. The Azure IoT DevKit shows up as `STMicroelectronics`, usually on `/dev/ttyACM0`
 
-{% asset_img select-serial-port.png "Choosing a port" %} 
+{{% img "select-serial-port.png" "Choosing a port" %}} 
 
 Now that VS Code knows what board you're using, it's smart enough to show you the built-in examples. Use `Ctrl+Shift+P` again and select **Arduino: Examples**.
 
-{% asset_img mxchip-examples.png "Azure IoT DevKit examples" %} 
+{{% img "mxchip-examples.png" "Azure IoT DevKit examples" %}} 
 
 Choose **Examples for MXCHIP AZ3166 -> AzureIoT -> GetStarted**.
 
@@ -176,7 +178,7 @@ Select `Serial port setup` and make sure that you've got the following set:
 * A - Serial device: `/dev/ttyACM0`
 * E - Bps/Par/bits: `115200 8N1`
 
-{% asset_img configure-minicom.png "Configure minicom" %} 
+{{% img "configure-minicom.png" "Configure minicom" %}} 
 
 Now, you can select `Save setup as dfl`, then `Exit minicom`. 
 

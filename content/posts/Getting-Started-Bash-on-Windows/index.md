@@ -20,7 +20,7 @@ I'm spending more and more time with Bash on Windows / Windows Subsystem for Lin
 
 The Windows Console host has made some great improvements, but as of Creators Update, the colors you're going to get out of the box are still pretty rough. 
 
-{% asset_img colors-blackandblue.png "Dark blue text on a black console background" %}
+{{% img "colors-blackandblue.png" "Dark blue text on a black console background" %}}
 
 Dark blue on black, ouch. 
 
@@ -43,7 +43,7 @@ Specifically, I like Solarized Dark, so I'm going to start with [solarized-dark.
 
 Note that if your shortcut is named **Bash**, your key would be named **[HKEY_CURRENT_USER\Console\Bash]**
 
-{% asset_img colors-solarizeddark.png "Almost, but not quite there" %}
+{{% img "colors-solarizeddark.png" "Almost, but not quite there" %}}
 
 Much better! We could stop there if we wanted to. But there are still a few places, like that **.azure** directory, where I still want more readable text. Here's where I tip my toes into the Linux world. Thankfully, GitHub saves me again - [seebi/dircolors-solarized](https://github.com/seebi/dircolors-solarized)
 
@@ -55,6 +55,6 @@ curl -o ~/.dircolors https://raw.githubusercontent.com/seebi/dircolors-solarized
 
 And after closing & restarting the Bash shell...
 
-{% asset_img colors-solarizeddark-withdircolors.png "Console colors are fixed!" %}
+{{% img "colors-solarizeddark-withdircolors.png" "Console colors are fixed!" %}}
 
 There we go! Room for improvement & customization? Sure, but this is a great improvement over the old & busted blue on black defaults. And it's a great first step towards bigger & better things.

@@ -9,7 +9,7 @@ aliases:
 ---
 
 
-In a {% post_link Supercharging-the-Azure-Cloud-Shell "previous post" %}, I shared some info on how to connect to your Azure Cloud Shell shared drive, with a particular focus on Bash on Windows. I thought to myself, "How can I make this even easier?" 
+In a [previous post]({{< relref "posts/Supercharging-the-Azure-Cloud-Shell" >}}), I shared some info on how to connect to your Azure Cloud Shell shared drive, with a particular focus on Bash on Windows. I thought to myself, "How can I make this even easier?" 
 
 Here's how to get started in just two commands!
 
@@ -49,7 +49,7 @@ Because only root can use the `--types` option on `mount`, the `mountclouddrive.
 cat ~/.mountclouddrive.sh
 ```
 
-{% asset_img bash-examplemountscript.png "This has been long deleted/recreated, so don't bother hacking me" %}
+{{% img "bash-examplemountscript.png" "This has been long deleted/recreated, so don't bother hacking me" %}}
 
 Looks legit to me! And to connect during your normal dev/admin activities, use
 
@@ -59,7 +59,7 @@ Looks legit to me! And to connect during your normal dev/admin activities, use
 
 Putting that all together, you'll get something like the following
 
-{% asset_img bash-success.png "Specific url is different than example command due to Gist revisions" %}
+{{% img "bash-success.png" "Specific url is different than example command due to Gist revisions" %}}
 
 Easy! 2 commands and you're up and running!
 

@@ -42,7 +42,7 @@ https://portal.azure.com/#create/microsoft.template/uri/**<url-encoded-template-
 
 Verdict: it works great! You can change parameters, specify the target resource group, and dig into the template to see details before hitting deploy.
 
-{% asset_img custom_deployment.png "Fill in some parameters, and voila!" %}
+{{% img "custom_deployment.png" "Fill in some parameters, and voila!" %}}
 
 Test it yourself with a storage account below
 

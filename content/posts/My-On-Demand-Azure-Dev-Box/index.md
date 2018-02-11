@@ -26,7 +26,7 @@ az group create -n devbox -g devbox --image UbuntuLTS --size Standard_B4MS
 
 I don't use all of my VMs every day, and I'm not usually hacking on a remote VM late at night. Azure has a handy feature called `Auto-shutdown` that can turn off VMs on a schedule. That is - deallocate them and stop charging me money. Enable it on the VM resource in the Azure Portal.
 
-{% asset_img auto-shutdown.png "No more charges for things I'm not using!" %}
+{{% img "auto-shutdown.png" "No more charges for things I'm not using!" %}}
 
 > This is also a handy reminder to ** stop working ** and spend some time with my family. That's a post for another day
 
@@ -34,7 +34,7 @@ I don't use all of my VMs every day, and I'm not usually hacking on a remote VM 
 
 I got this far and felt pretty good. But then I realized I had to login to the Azure portal or launch the Azure CLI to start my VM every time I wanted to use it, which was totally lame. And what if I didn't immediately remember the DNS name or the IP address of the VM I just turned on? More clicking.
 
-{% asset_img do-not-want.jpg "First world problems for sure. It used to take months to get a new machine" %}
+{{% img "do-not-want.jpg" "First world problems for sure. It used to take months to get a new machine" %}}
 
 I'm willing to wait for a VM to boot up, but I didn't like the extra steps. I wanted to just press a button, be prompted for my password, and then be dropped inside a VM of my choice.
 
@@ -55,7 +55,7 @@ So essentially all I've done is replace an Azure portal/CLI login with an Azure 
 
 Wait a minute, that's something useful. I can create a shortcut & add it to the Chrome bookmarks bar!
 
-{% asset_img bookmarks.png "Noel does not like words on his bookmarks bar" %}
+{{% img "bookmarks.png" "Noel does not like words on his bookmarks bar" %}}
 
 My bookmark:
 * Title: <blank>
@@ -69,7 +69,7 @@ SSH is up next. Turns out that the [Secure Shell](https://chrome.google.com/webs
 
 I've already got my colors, fonts, and keys just the way I want them. So when I click on my bookmark, the function will start my VM and I'm presented with the following
 
-{% asset_img secure-shell.png "Do not hack me plz" %}
+{{% img "secure-shell.png" "Do not hack me plz" %}}
 
 When I'm done with it, I can either run `az vm deallocate` or just wait for auto-shutdown to do its job
 
@@ -79,6 +79,6 @@ Worth it? For me, I think so! I use this thing a lot.
 
 Or maybe I'm this guy
 
-{% asset_img complicated.jpg "If you're reading this, I have bad news. You're probably this guy or gal as well" %}
+{{% img "complicated.jpg" "If you're reading this, I have bad news. You're probably this guy or gal as well" %}}
 
 What do you think? Is there anything you would add or remove to make this more useful to you?

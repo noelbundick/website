@@ -51,7 +51,7 @@ cd /mnt/c/Users/Noel
 ls -al
 ```
 
-{% asset_img bash-noclouddrive.png "Where is clouddrive?" %}
+{{% img "bash-noclouddrive.png" "Where is clouddrive?" %}}
 
 Failsauce! Where's my `clouddrive` folder? Turns out the version of WSL in Creators Update [doesn't yet have](https://github.com/Microsoft/BashOnWindows/issues/1975) the latest file system improvements. I'll need at least [Build 16176](https://msdn.microsoft.com/en-us/commandline/wsl/release_notes) to try this out. 
 
@@ -74,7 +74,7 @@ cd /mnt/c/Users/Noel
 ls -al
 ```
 
-{% asset_img bash-seeclouddrive.png "Well, hello cloudshell!" %}
+{{% img "bash-seeclouddrive.png" "Well, hello cloudshell!" %}}
 
 Nice! Looks like Fast Ring is already an improvement. And when I go to look at my files in `clouddrive`
 
@@ -82,7 +82,7 @@ Nice! Looks like Fast Ring is already an improvement. And when I go to look at m
 cd clouddrive
 ```
 
-{% asset_img bash-inputoutputerror.png "Nothing's ever that easy" %}
+{{% img "bash-inputoutputerror.png" "Nothing's ever that easy" %}}
 
 Well, that didn't quite work out. Not sure what's going on here. I'll send some feedback to the WSL team on this. I'm in uncharted territory. But maybe I can get it working anyway. In the [blog post](https://blogs.msdn.microsoft.com/wsl/2017/04/18/file-system-improvements-to-the-windows-subsystem-for-linux/) announcing the latest filesystem improvements, it looks like I can mount a network location directly via the `mount` command.
 
@@ -100,23 +100,23 @@ ls -al
 echo "I wonder if this works..." > test.txt
 ```
 
-{% asset_img bash-test.png "So far, so good" %}
+{{% img "bash-test.png" "So far, so good" %}}
 
 And now the real moment of truth - none of this time spent was worth anything if I can't read it from my Cloud Shell! Let's check it out in the Azure Portal:
 
-{% asset_img cloudshell-success.png "Houston, we have liftoff!" %}
+{{% img "cloudshell-success.png" "Houston, we have liftoff!" %}}
 
 Awesome! Well if that works, then I should also be able to access via my Windows tools too, right?
 
-{% asset_img explorer-success.png "Woohoo!" %}
+{{% img "explorer-success.png" "Woohoo!" %}}
 
 &nbsp;
 
-{% asset_img windows-success.png "This works too!" %}
+{{% img "windows-success.png" "This works too!" %}}
 
 Looking great! I wonder if...
 
-{% asset_img mobile-success.png "So far, so good" %}
+{{% img "mobile-success.png" "So far, so good" %}}
 
 It sure does! Cloud Shell on the Azure mobile app works too. You probably saw this in the Build day 1 keynote, but it hasn't made its way out to everyone just quite yet. I'm on the beta iOS Azure app, so I would expect for this to roll out quite soon.
 

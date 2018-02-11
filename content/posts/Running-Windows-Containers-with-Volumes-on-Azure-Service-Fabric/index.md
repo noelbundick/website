@@ -15,7 +15,7 @@ Containers are rapidly becoming the de-facto choice for application packaging, d
 
 ## Minecraft, I choose you!
 
-{% asset_img pokeball.jpg "Minecraft + Pokémon = awesome!" %}
+{{% img "pokeball.jpg" "Minecraft + Pokémon = awesome!" %}}
 
 First off - I need an app that reads & writes local state. Databases and legacy apps are the common pick, but I'll take any excuse I can to play video games at work, so I'm choosing the [Minecraft Windows Container image](https://hub.docker.com/r/acanthamoeba/minecraft-server/) that I created (as an excuse to play games while learning Windows Containers...)
 
@@ -62,7 +62,7 @@ For my Minecraft example, my `ApplicationType`, version 1.0.0 describes the foll
 * I want to parameterize my app so I can run lots of Minecraft servers on my cluster - each one will have different ports, data folders, etc.
 * Finally, I want to limit how much CPU/memory I allocate to each Minecraft server
 
-{% asset_img sfoverview.png "Service Fabric application types and instances" %}
+{{% img "sfoverview.png" "Service Fabric application types and instances" %}}
 
 The above diagram shows an example representation of how this all works. Minecraft first gets set up as an ApplicationType, and when I create instances, that's when Service Fabric will launch containers & map ports. Think of the ApplicationType like a rubber stamp, and the Instance is the impression I get when I use it on a piece of paper. Those instances can differ (color of ink, type of paper, etc) but each impression came from the same stamp.
 
@@ -70,7 +70,7 @@ The above diagram shows an example representation of how this all works. Minecra
 
 Let's do a deep dive into how I set up container storage.  Normally with VM Scale Sets, you do something like attach a 100GB data disk to every instance. A naive approach to container volumes might look something like the following:
 
-{% asset_img datadisk.png "Data disks attached to VMSS" %}
+{{% img "datadisk.png" "Data disks attached to VMSS" %}}
 
 > If you're still learning containers, a quick note on container storage: it's important to understand that the data inside a container goes away when the container is destroyed. So first step is always to map a path from inside the container to a path outside the container. Ex: `C:\data` inside the container pointing to `D:\some_folder` on the host.
 
@@ -80,7 +80,7 @@ Okay, looks great! My container can die and I still have my data stored on a dis
 
 Wait, hold on - remember how I said container orchestrators introduce new challenges? Let's see what this looks like when a node fails, or needs to be taken offline for security updates:
 
-{% asset_img datadisk-failure.png "Data disks attached to VMSS - failure" %}
+{{% img "datadisk-failure.png" "Data disks attached to VMSS - failure" %}}
 
 Not looking so great anymore. My data is indeed safe, but it's logically bound to a specific VM (Node 0). When Service Fabric reschedules my service, it's going to launch on a new node, see no data, and start from scratch. That's bad! Really bad! I'm going to get a different set of data every time my service moves across nodes. I'm actually in worse shape than if I were to just host my app on a VM at this point - I'm tied to a specific node, but I'm pretending that I'm not.
 
@@ -88,11 +88,11 @@ Not looking so great anymore. My data is indeed safe, but it's logically bound t
 
 This is where SMB Global Mapping can really help me out. It's like `net use` on steroids - it can map an SMB share for all users at the OS level. And lucky for me, Azure Files provides a hosted SMB service that persists data independently of any given VM node (or even cluster!). Here's what my storage looks like when I've configured everything:
 
-{% asset_img smbglobalmapping.png "SMB Global Mapping" %}
+{{% img "smbglobalmapping.png" "SMB Global Mapping" %}}
 
 Cool, so I've offloaded my data onto Azure Files. Let's run through the same thought experiment - what happens when my container dies in this scenario?
 
-{% asset_img smbglobalmapping-failure.png "SMB Global Mapping - failure" %}
+{{% img "smbglobalmapping-failure.png" "SMB Global Mapping - failure" %}}
 
 Awesome! I've got the mapping set up on the new node, pointing to the same Azure File share. My container reads the existing data, and can continue on. I've lost no data, and to the players on my Minecraft server - they've experienced a disconnect, but didn't completely lose everything in their world.
 
@@ -182,7 +182,7 @@ Finally, I need to map that symlink'd SMB Global Mapping to the data folder insi
 
 ## Results
 
-{% asset_img success.gif "Nailed it!" %}
+{{% img "success.gif" "Nailed it!" %}}
 
 It works great! I'm able to deploy one or more instances of Minecraft as a Windows Container to a Service Fabric cluster, with each pointing to its own data. I can take down a node and let Service Fabric take care of putting everything on a new node, and then have it reconnect to storage with minimal downtime - I'm talking seconds, not minutes or hours.
 

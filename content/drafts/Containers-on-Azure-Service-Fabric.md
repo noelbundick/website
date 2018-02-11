@@ -8,7 +8,7 @@ tags:
 
 * Include OMS / App Insights
 
-In the post {% post_link Service-Fabric-Cluster-Quickstart "Service Fabric Cluster Quickstart" %}, I played around a bit with Service Fabric and got a secure cluster running relatively painlessly. I thought it would be fun to experiment with the new ability to run containers for both Windows Server 2016 and Linux. My plan is to create a couple of simple cross-platform apps that talk to each other, and then deploy them on a Windows cluster, then a Linux cluster & see what happens.
+In the post [Service Fabric Cluster Quickstart]({{< relref "posts/Service-Fabric-Cluster-Quickstart" >}}), I played around a bit with Service Fabric and got a secure cluster running relatively painlessly. I thought it would be fun to experiment with the new ability to run containers for both Windows Server 2016 and Linux. My plan is to create a couple of simple cross-platform apps that talk to each other, and then deploy them on a Windows cluster, then a Linux cluster & see what happens.
 
 # Windows Containers
 

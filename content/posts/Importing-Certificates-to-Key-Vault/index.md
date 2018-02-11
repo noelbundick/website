@@ -9,7 +9,7 @@ aliases:
 ---
 
 
-I've found that creating a secure Service Fabric cluster can be a challenge - primarily because of the required interaction with Key Vault. In my {% post_link Service-Fabric-Cluster-Quickstart "Service Fabric Cluster Quickstart" %} post, I shared how the latest Azure PowerShell updates make it much easier to get up and running. That works great for dev clusters, but you'll really want to use an ARM template for any production environments so you can reap the benefits of repeatable declarative deployments.
+I've found that creating a secure Service Fabric cluster can be a challenge - primarily because of the required interaction with Key Vault. In my [Service Fabric Cluster Quickstart]({{< relref "posts/Service-Fabric-Cluster-Quickstart" >}}) post, I shared how the latest Azure PowerShell updates make it much easier to get up and running. That works great for dev clusters, but you'll really want to use an ARM template for any production environments so you can reap the benefits of repeatable declarative deployments.
 
 This means that you've still got to figure out how to get your certificate into KeyVault and reference it properly. I've endured the pain on your behalf. This post will give you an easy to follow guide to get a certificate into Key Vault, then collect the parameters you'll need for ARM template deployment. I've compiled the steps for both Azure CLI and Azure PowerShell - choose the method that works best for you!
 
@@ -172,7 +172,7 @@ Basically there are **very** limited commands and modules available, and AzureRM
 
 NOPE. Don't do it.
 
-{% asset_img nope.gif "Just no" %}
+{{% img "nope.gif" "Just no" %}}
 
 
 # Links

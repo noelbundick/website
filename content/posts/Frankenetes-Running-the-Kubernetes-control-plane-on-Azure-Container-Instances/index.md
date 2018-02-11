@@ -19,7 +19,7 @@ My thought was that these are just apps, processes, binaries that run with flags
 
 But I also knew there were already plenty of [sane](https://github.com/Azure/acs-engine) [ways](https://docs.microsoft.com/en-us/azure/aks/) to run a Kubernetes cluster on Azure. And this felt like I was cobbling together parts from all over... and that if anyone did this in production, it could turn into a monster! So I decided to give my monstrous creation a name.
 
-{% asset_img frankenstein.jpg "Boris Karloff as the Kubernetes, I mean Frankenstein monster" %}
+{{% img "frankenstein.jpg" "Boris Karloff as the Kubernetes, I mean Frankenstein monster" %}}
 
 > Yes, I know that's actually Frankenstein's monster. Don't worry, your nits have been recorded.
 
@@ -54,7 +54,7 @@ az storage account create -n $AZURE_STORAGE_ACCOUNT -g $AZURE_RESOURCE_GROUP
 AZURE_STORAGE_KEY=$(az storage account keys list -n $AZURE_STORAGE_ACCOUNT -g $AZURE_RESOURCE_GROUP --query '[0].value' -o tsv)
 ```
 
-{% asset_img young_frankenstein.jpg "Maybe I should have named it Abby Normal" %}
+{{% img "young_frankenstein.jpg" "Maybe I should have named it Abby Normal" %}}
 
 ## etcd
 
@@ -92,7 +92,7 @@ az container create -g $AZURE_RESOURCE_GROUP \
 
 And here's where I updated my DNS on CloudFlare
 
-{% asset_img frankenetes-etcd-dns.png "Adding the etcd record in CloudFlare DNS" %}
+{{% img "frankenetes-etcd-dns.png" "Adding the etcd record in CloudFlare DNS" %}}
 
 Finally, I verified everything by running a few etcdctl commands against the remote `frankenetes-etcd.noelbundick.com:2379` host
 
@@ -122,7 +122,7 @@ az container create -g $AZURE_RESOURCE_GROUP \
 
 And one more DNS update for the apiserver
 
-{% asset_img frankenetes-apiserver-dns.png "Adding the apiserver record in CloudFlare DNS" %}
+{{% img "frankenetes-apiserver-dns.png" "Adding the apiserver record in CloudFlare DNS" %}}
 
 To verify, I hit the apiserver endpoint by running `curl http://frankenetes-apiserver.noelbundick.com:6445/version`
 
@@ -164,7 +164,7 @@ kubectl version
 kubectl api-versions
 ```
 
-{% asset_img young_frankenstein_2.jpg "Frankenetes is alive" %}
+{{% img "young_frankenstein_2.jpg" "Frankenetes is alive" %}}
 
 ## Nodes!
 
@@ -176,7 +176,7 @@ Relevant sections:
 
 After all was said & done, I was able to run pods on my node, all being controlled by Frankenetes running in ACI!
 
-{% asset_img pods.jpg "Lots of work to make it useful, but it does work!" %}
+{{% img "pods.jpg" "Lots of work to make it useful, but it does work!" %}}
 
 ## What's next?
 
@@ -194,4 +194,4 @@ I want to automate all the DNS steps using [Azure Event Grid](https://docs.micro
 
 Why stop at a virtual master control plane when I could have virtual nodes! I want to wire up [virtual-kubelet](https://github.com/virtual-kubelet/virtual-kubelet). If that works, I could interact with my virtual cluster with my familiar Kubernetes toolkit (kubectl, kubectx, kubens, etc), but then **all** of my workloads would run on ACI. Not sure that's a useful concept, but hey - I'll give it a try and see if anyone likes it!
 
-{% asset_img young_frankenstein_3.gif "Me, when I got everything up and running" %}
+{{% img "young_frankenstein_3.gif" "Me, when I got everything up and running" %}}
