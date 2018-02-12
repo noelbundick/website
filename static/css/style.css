@@ -364,36 +364,24 @@ Post List
 	margin-bottom: 0;
 }
 
-#post-list li,#archive-list li {
+#post-list li {
+	list-style-type: none;
+}
+
+#post-list a {
+	padding-left: 1rem;
+}
+
+#post-list a:hover {
+	text-decoration: underline;
+}
+
+#archive-list li {
 	border-top: 1px solid #eee;
 	padding-top: 20px;
 	padding-bottom: 20px;
 	list-style-type: none;
 	margin-bottom: 0;
-}
-
-#post-list li:last-child {
-	border-bottom: 1px solid #eee;
-}
-
-#post-list a {
-	color: #333;
-	display: block;
-	font: bold 19px/1.7 "Helvetica Neue",helvetica,Arial,sans-serif;
-}
-
-#post-list .dates {
-	float: right;
-	position: relative;
-	top: 1px;
-	font: 300 17px/1.8 "Helvetica Neue",helvetica,Arial,sans-serif;
-	color: #bbb;
-}
-
-#post-list-footer {
-	border-top: 1px solid #eee;
-	margin-top: 20px;
-	padding-top: 100px;
 }
 
 #archive-link {
