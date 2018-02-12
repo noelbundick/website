@@ -1,0 +1,12 @@
+<ul id="post-list" class="archive readmore">
+    <h3>{{ .Site.Params.readMore | default "Read more" }}</h3>
+
+    {{ $kind := where .Site.RegularPages "Section" "!=" "" }}
+    {{ $othr := where $kind "URL" "!=" .URL }}
+    {{ range first 10 $othr }}
+        <li>
+            {{ .Date.Format "2006-01-01" }}
+            <a href='{{ .URL }}'>{{ .LinkTitle }}<h2>{{ .Description | markdownify }}</h2></a>
+        </li>
+    {{ end }}
+</ul>

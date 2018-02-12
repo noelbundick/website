@@ -556,13 +556,11 @@ h2.month {
 }
 
 #post-list.archive.readmore h3{
-
 	  font: 400 20px "Helvetica Neue", Helvetica,Arial,sans-serif;
 	  margin-bottom: 30px;
 }
 
 #post-list.archive.readmore a{
-	font: 400 16px/1.6 "Helvetica Neue",helvetica,Arial,sans-serif;
 	color: #2bbc8a;
 }
 
