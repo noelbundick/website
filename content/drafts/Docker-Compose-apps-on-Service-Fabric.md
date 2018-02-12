@@ -12,7 +12,7 @@ tags:
 * 
 
 ## Bash
-```shell
+```bash
 # az sf cluster select
 # az sf compose create 
 ```

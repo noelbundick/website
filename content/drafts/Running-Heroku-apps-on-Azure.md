@@ -6,7 +6,7 @@ tags:
 
 ACS Kubernetes
 
-```shell
+```bash
 az group create -n k8s -l southcentralus
 az acs create -n nobunk8s -g k8s --type kubernetes
 ```

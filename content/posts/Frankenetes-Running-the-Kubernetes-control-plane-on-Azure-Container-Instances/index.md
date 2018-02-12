@@ -41,7 +41,7 @@ I figured once those were in place, I should be able to connect nodes to my clus
 
 I set up a couple of things in Azure to get started. A resource group to hold everything, and a storage account for all of my persistent data. Right now, it's mainly etcd data, but in the future, I can also store certs, logs, and so on.
 
-```shell
+```bash
 AZURE_RESOURCE_GROUP=frankenetes
 
 # As of 2.0.25, you have to use 'export' for it to automagically set your storage acct
@@ -70,7 +70,7 @@ Unfortunately, I ran into some unusual issues on startup. My limited understandi
 
 My next issue was the `advertise-client-urls`. ACI gave me a public IP from, but it was dynamically generated and I wasn't able to specify it or know it until **after** the container group had been created. I needed another level of abstraction - DNS to the rescue! I'm listening on all addresses inside the container, and then I configured DNS to let the apiserver resolve my etcd host from outside the container.
 
-```shell
+```bash
 # Create an Azure File share to hold cluster data
 az storage share create -n etcd
 
@@ -100,7 +100,7 @@ Finally, I verified everything by running a few etcdctl commands against the rem
 
 Next up - the apiserver. I used the latest stable [hyperkube](https://github.com/kubernetes/kubernetes/tree/master/cluster/images/hyperkube) image to run the API server, and connected to etcd using the DNS name.
 
-```shell
+```bash
 # Create a share to hold logs/etc
 az storage share create -n apiserver
 
@@ -130,7 +130,7 @@ To verify, I hit the apiserver endpoint by running `curl http://frankenetes-apis
 
 Cool! The hard part was done. Smooth sailing from here on out. The controller manager was pretty straightforward - I just pointed it at the apiserver. No certs, no problems!
 
-```shell
+```bash
 az container create -g $AZURE_RESOURCE_GROUP \
   --name controllermanager \
   --image gcr.io/google-containers/hyperkube-amd64:v1.9.2 \
@@ -141,7 +141,7 @@ az container create -g $AZURE_RESOURCE_GROUP \
 
 Same story for the scheduler - it just needs to know where the apiserver is. Around this point, I really started to appreciate how modular the Kubernetes core components were.
 
-```shell
+```bash
 az container create -g $AZURE_RESOURCE_GROUP \
   --name scheduler \
   --image gcr.io/google-containers/hyperkube-amd64:v1.9.2 \
@@ -152,7 +152,7 @@ az container create -g $AZURE_RESOURCE_GROUP \
 
 I needed a way to connect to my cobbled together Kubernetes cluster (still with no nodes). I used the following to set up my kubeconfig and verify everything was working.
 
-```shell
+```bash
 # Set up cluster/context info in a standalone file
 kubectl config set-cluster frankenetes --server=http://frankenetes-apiserver.noelbundick.com:6445 --kubeconfig=frankenetes.kubeconfig
 kubectl config set-context default --cluster=frankenetes --kubeconfig=frankenetes.kubeconfig
@@ -171,6 +171,7 @@ kubectl api-versions
 I ran through the manual steps in Kubernetes the Hard Way on Azure to create a single node, stripping out all the TLS bits along the way, and substituting 1.9.2 for 1.8.0.
 
 Relevant sections:
+
 * [Compute resources](https://github.com/ivanfioravanti/kubernetes-the-hard-way-on-azure/blob/master/docs/03-compute-resources.md) - Virtual Network, Firewall Rules, Kubernetes Workers
 * [Bootstrapping the Kubernetes Worker Nodes](https://github.com/ivanfioravanti/kubernetes-the-hard-way-on-azure/blob/master/docs/09-bootstrapping-kubernetes-workers.md)
 

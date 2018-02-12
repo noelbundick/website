@@ -37,7 +37,7 @@ New-AzureRmServiceFabricCluster -ResourceGroupName trash123 -Location southcentr
 
 Here's an example of the output generated. Hold onto your output to be used in a later step.
 
-```
+```text
 
 VmUserName   : adminuser
 Certificates : Primary key vault and certificate detail:

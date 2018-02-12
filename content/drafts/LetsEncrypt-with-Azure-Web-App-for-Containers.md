@@ -12,7 +12,7 @@ I'm using Ubuntu 16.04 via WSL
 
 * https://certbot.eff.org/#ubuntuxenial-nginx
 
-```shell
+```bash
 # See what options to run
 certbot --help
 
@@ -37,7 +37,7 @@ http://www.noelbundick.com/.well-known/acme-challenge/g7LuPeG2AbMvvlgVff5joOWLoS
 
 Run this in the SSH session inside your web app container
 
-```shell
+```bash
 # Create the target directory
 mkdir -p .well-known/acme-challenge
 
@@ -75,7 +75,7 @@ IMPORTANT NOTES:
 Per the docs, Azure wants the cert in PFX format
 * https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-tutorial-custom-ssl#enforce-https-for-web-apps-on-linux
 
-```shell
+```bash
 # Convert PEM to PFX. Don't forget the password!
 sudo openssl pkcs12 -export -out noelbundick.pfx -inkey /etc/letsencrypt/live/noelbundick.com/privkey.pem -in /etc/letsencrypt/live/noelbundick.com/fullchain.pem
 

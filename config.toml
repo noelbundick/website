@@ -36,7 +36,7 @@ disqusShortname = "noelbundick"
 
 	# Integrate Javascript files or stylesheets by adding the url to the external assets or by
 	# linking local files with their path relative to the static folder, e.g. "css/styles.css"
-	customCSS = []
+	customCSS = ["css/zenburn.css"]
 	customJS  = []
 
 	# The variables below are optionally too and can be used to
@@ -72,3 +72,7 @@ disqusShortname = "noelbundick"
     github   = "https://www.github.com/noelbundick"
     twitter  = "https://www.twitter.com/acanthamoeba"
     linkedin = "https://www.linkedin.com/in/noelbundick"
+
+# Markdown engine configuration
+[blackFriday]
+		hrefTargetBlank = true

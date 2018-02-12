@@ -13,7 +13,7 @@ resources:
 
 For a while now, I've had an interest in playing with IoT devices to do interesting things. I consider myself a novice (at best) with electronic components, so I wanted an all-in-one unit to get started. I recently borrowed an [Azure IoT DevKit](https://microsoft.github.io/azure-iot-developer-kit/), which has lots of interesting little sensors on board, and a lot of getting started resources.
 
-{{{% img "AZ1366.png" "Look at all the components that I DIDN'T have to solder together!" %}}}
+{{% img "AZ1366.png" "Look at all the components that I DIDN'T have to solder together!" %}}
 
 > More precisely, this is a [MXChip AZ1366](http://mxchip.com/az3166)
 
@@ -51,7 +51,7 @@ Use `Ctrl+Shift+P` to open the command palette, type and select **Arduino: Board
 
 Assuming you aren't logged in as `root` (if so, shame on you!), you'll need to do just a bit of work to allow yourself access to your device. VS Code has downloaded the bits you need in the previous step, but now we need to copy some of them around. Run the following in a terminal
 
-```shell
+```bash
 # Copy the default rules. This grants permission to the group 'plugdev'
 sudo cp ~/.arduino15/packages/AZ3166/tools/openocd/0.10.0/linux/contrib/60-openocd.rules /etc/udev/rules.d/
 sudo udevadm control --reload-rules
@@ -75,7 +75,7 @@ This app makes a hard-coded assumption that Arduino is located at `/opt/arduino-
 
 > Trust me, just adding this symlink is easier than reverse engineering async ES6 code that's been run through Babel
 
-```shell
+```bash
 sudo ln -s ~/Downloads/arduino-1.8.5 /opt/arduino-1.8.3
 ```
 
@@ -165,7 +165,7 @@ I had to learn a lot as I put this post together. Here's some things that might 
 
 minicom is a friendly serial communication program. You can install it via apt-get, and talk directly to the MXCHIP AZ3166. It's handy for setting wifi settings, seeing what's going on with the device, etc. Here's some tips to get started
 
-```shell
+```bash
 # Installation
 sudo apt-get install minicom
 

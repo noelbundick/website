@@ -29,16 +29,16 @@ Okay, that's getting to be a lot of stuff to remember, so I'm going to use an AR
 
 I'm running the following commands in a PowerShell session:
 
-```bash
+```powershell
 # Create a cluster
-az sf cluster create \
-  -g sf-1709 \
-  -l eastus \
-  --template-file sf-1709/template.json \
-  --parameter-file sf-1709/parameters.json \
-  --vault-name sf-1709 \
-  --certificate-subject-name sf-1709 \
-  --certificate-password 'Password#1234' \
+az sf cluster create `
+  -g sf-1709 `
+  -l eastus `
+  --template-file sf-1709/template.json `
+  --parameter-file sf-1709/parameters.json `
+  --vault-name sf-1709 `
+  --certificate-subject-name sf-1709 `
+  --certificate-password 'Password#1234' `
   --certificate-output-folder .
 
 # Import cert
@@ -130,7 +130,7 @@ In `ServiceManifest.xml`, I'm launching a .bat file prior to running my containe
 
 I didn't see a quick & easy way to run a PowerShell script, so the batch file just invokes PowerShell:
 
-```batch
+```bash
 powershell.exe -ExecutionPolicy Bypass -Command ".\AddSMBGlobalMapping.ps1"
 ```
 
