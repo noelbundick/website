@@ -28,6 +28,7 @@ Frankenetes! I'll walk you through what I did and some of the gotchas, so you ca
 ## Overview
 
 The Kubernetes control plane consists of a few moving parts
+
 * [etcd](https://coreos.com/etcd/): the distributed key/value store that holds cluster data
 * apiserver: REST API that validates & controls all reads/writes to etcd
 * controller manager: runs the core control loops of Kubernetes

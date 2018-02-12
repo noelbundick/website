@@ -52,21 +52,20 @@ html, body { height: 100%; }
 
 body {
 	font:16px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
-	color: #666;
+	color: #c9cacc;
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
+	background-color: #1d1f21;
 }
 
 h1 {
 	font-size: 30px;
 	letter-spacing: -1px;
-	color: #222;
 	font-weight: bold;
 }
 
 h2 {
 	font: italic 19px/1.3em Georgia,serif;
-	color: #bbb;
 }
 
 .profile #wrapper {
@@ -92,23 +91,19 @@ h2 {
 .profile h1 {
 	font-weight: 400;
 	letter-spacing: 0px;
-	font-size: 20px;
-	color: #222;
+	font-family: "Menlo", "Meslo LG", monospace;
 }
 
 .profile h2 {
-	font-size: 20px;
-	  font-weight: 300;
-	  color: #aaa;
-	  margin-top: 10px;
-	  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	  font-style: normal;
-
+	font-weight: 300;
+	color: #888;
+	margin-top: 10px;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-style: normal;
 }
 
 nav.main-nav {
 	padding: 20px 20px 0;
-	background: rgba(255,255,255,.90);
 	margin: 0 auto;
 	text-align: right;
 	z-index: 100;
@@ -182,8 +177,6 @@ ol { list-style: decimal; }
 /* Line Height */
 #post-body, p { line-height:1.7; }
 
-b, strong { font-weight: 500;
-  color: #1E2025; }
 em, i { font-style: italic; }
 
 #title {
@@ -206,13 +199,11 @@ em, i { font-style: italic; }
 .home h1 {
 	font-size: 30px;
 	letter-spacing: -1px;
-	color: #222;
 	font-weight: bold;
 }
 
 .home h2 {
 	font: italic 19px/1.3em Georgia,serif;
-	color: #bbb;
 }
 
 .post header {
@@ -222,14 +213,12 @@ em, i { font-style: italic; }
 
 .post h1 {
 	margin-bottom: 0px;
-	color: #222;
 	font: 300 32px/1.4em "Helvetica Neue", Helvetica,Arial,sans-serif;
 }
 
 .post h2 {
 	margin-bottom: 40px;
 	  font: 300 24px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
-	  color: #111;
 }
 
 .post h2.subtitle {
@@ -241,10 +230,10 @@ em, i { font-style: italic; }
 	font: normal 13px/1.5em "Helvetica Neue",Helvetica,Arial,sans-serif;
 	margin: -5px 0 40px 0;
 	color: #b2b9be;
-	  font-size: 13px;
-	  text-transform: uppercase;
-	  letter-spacing: 2px;
-	  display: inline-block;
+	font-size: 13px;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	display: inline-block;
 }
 
 #post-list h2 {
@@ -254,8 +243,6 @@ em, i { font-style: italic; }
 	margin-top: 2px;
 }
 
-h3, h4, h5 { color:#333; }
-
 h3 { font-size:20px; font-weight: 400; }
 h4 { font-size:16px; font-weight:bold; }
 h5 { font-size:15px; font-weight: bold; }
@@ -263,7 +250,6 @@ h5 { font-size:15px; font-weight: bold; }
 h6 {
 	font-size: 13px;
 	font-weight: bold;
-	color: #666;
 	margin-bottom: 6px;
 }
 
@@ -277,9 +263,16 @@ p.small {
 }
 
 blockquote {
-	padding-left: 15px;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	padding: 2px 5px 2px 15px;
 	border-left: 3px solid #ef1f66;
-	background-color: #f0fcff;
+	background-color: #333333;
+	border-radius: 5px;
+}
+
+blockquote p {
+	margin: 0;
 }
 
 hr {
@@ -552,7 +545,7 @@ h2.month {
   border-radius: 50%;
   margin-top: 3px;
   margin-right: 20px;
-  box-shadow: 0 0 0 3px #fff, 0 0 0 4px #eee;
+  box-shadow: 0 0 0 3px #222, 0 0 0 4px #2bbc8a;
 }
 
 #post-list.archive.readmore h3{
@@ -631,9 +624,12 @@ a.symbol:hover {
 
 p code, li code { 
 	font-family:Menlo, Monaco, Courier; 
-	background-color:#EEE; font-size:14px; 
+	color:#EEE; 
+	background-color: #0d0f11;
+	font-size:14px; 
 	padding: 4px; 
 	font-weight: 600;
+	word-wrap: break-word;
 }
 
 #header #avatar {
@@ -657,7 +653,9 @@ a:hover {
 }
 
 code.hljs {
-  padding: 1.5em;
+	padding: 1.5em;
+	background-color: #2f2f2f;
+	border-radius: 10px;
 }
 
 #post-body ul li {
@@ -667,4 +665,8 @@ code.hljs {
 #post-body img {
   display: block;
   margin: auto;
+}
+
+twitterwidget {
+	margin: auto;
 }
