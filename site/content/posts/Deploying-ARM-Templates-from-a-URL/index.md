@@ -6,6 +6,7 @@ tags:
 date: 2017-08-07 07:30:04
 aliases:
   - /2017/08/07/Deploying-ARM-Templates-from-a-URL/
+  - /2017/08/08/Deploying-ARM-Templates-from-a-URL/
 ---
 
 

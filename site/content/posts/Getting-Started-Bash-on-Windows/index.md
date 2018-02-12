@@ -5,6 +5,7 @@ tags:
 date: 2017-05-08 18:00:00
 aliases:
   - /2017/05/08/Getting-Started-Bash-on-Windows/
+  - /2017/05/09/Getting-Started-Bash-on-Windows/
 ---
 
 

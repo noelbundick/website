@@ -5,6 +5,7 @@ tags:
 date: 2017-11-13 19:25:38
 aliases:
   - /2017/11/13/My-On-Demand-Azure-Dev-Box/
+  - /2017/11/14/My-On-Demand-Azure-Dev-Box/
 ---
 
 

@@ -7,6 +7,7 @@ tags:
 date: 2018-01-27 20:22:46
 aliases:
   - /2018/01/27/Using-the-Azure-IoT-DevKit-with-Linux/
+  - /2018/01/28/Using-the-Azure-IoT-DevKit-with-Linux/
 ---
 
 For a while now, I've had an interest in playing with IoT devices to do interesting things. I consider myself a novice (at best) with electronic components, so I wanted an all-in-one unit to get started. I recently borrowed an [Azure IoT DevKit](https://microsoft.github.io/azure-iot-developer-kit/), which has lots of interesting little sensors on board, and a lot of getting started resources.

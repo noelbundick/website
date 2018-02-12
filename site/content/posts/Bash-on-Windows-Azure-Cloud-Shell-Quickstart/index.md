@@ -6,6 +6,7 @@ tags:
 date: 2017-05-14 14:49:56
 aliases:
   - /2017/05/14/Bash-on-Windows-Azure-Cloud-Shell-Quickstart/
+  - /2017/05/15/Bash-on-Windows-Azure-Cloud-Shell-Quickstart/
 ---
 
 

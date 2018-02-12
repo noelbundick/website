@@ -6,6 +6,7 @@ tags:
 date: 2018-02-10 15:56:10
 aliases:
   - /2018/02/10/Running-Windows-Containers-with-Volumes-on-Azure-Service-Fabric/
+  - /2018/02/11/Running-Windows-Containers-with-Volumes-on-Azure-Service-Fabric/
 ---
 
 

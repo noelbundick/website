@@ -5,6 +5,7 @@ tags:
 date: 2017-05-23 10:09:44
 aliases:
   - /2017/05/23/Using-Postman-with-Azure-REST-APIs/
+  - /2017/05/24/Using-Postman-with-Azure-REST-APIs/
 ---
 
 Azure has [a plethora of APIs](https://docs.microsoft.com/en-us/rest/api/) to interact with, and a lot of them have friendly wrappers via the Azure Portal, CLI or PowerShell cmdlets. But sometimes, I want to interact with services on a more detailed level, or try out newer API versions than the current tooling allows for. 

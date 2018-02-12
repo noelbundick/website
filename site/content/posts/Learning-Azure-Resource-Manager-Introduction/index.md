@@ -6,6 +6,7 @@ tags:
 date: 2017-07-14 11:16:47
 aliases:
   - /2017/07/14/Learning-Azure-Resource-Manager-Introduction/
+  - /2017/07/15/Learning-Azure-Resource-Manager-Introduction/
 ---
 
 
