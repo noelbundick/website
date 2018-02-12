@@ -4,8 +4,10 @@ languageCode = "en-us"
 title = "Noel Bundick"
 theme = "hugo-cactus-theme"
 rssLink = "atom.xml"
+
 # Enter your tracking code to enable Google Analytics
 googleAnalytics = "UA-96602440-1"
+
 # Disable comments by leaving disqusShortname empty
 disqusShortname = "noelbundick"
 
@@ -24,8 +26,10 @@ disqusShortname = "noelbundick"
 
 [params]
 	name = "Noel Bundick"
-	description = "Describe your website"
-	bio = "Blogger & Programmer"
+	description = ""
+	bio = "Christian | Husband | Father (soon!) | Software engineer"
+	gravatar = "noelbundick@gmail.com"
+
 	# Enter optionally your twitter account
 	twitter = "acanthamoeba"
 	enableRSS = true
@@ -39,17 +43,21 @@ disqusShortname = "noelbundick"
 	# translate or customize each string of the theme.
 
 	# Navigation links
-	home = ""
-	subscribe = ""
+	home = "home"
+	subscribe = "feed"
+
 	# Pagination links
-	olderPosts = ""
-	newerPosts = ""
+	olderPosts = "older"
+	newerPosts = "newer"
 	readMore = ""
+
 	copyright = ""
+
 	# Sharing options and author information in posts
-	aboutAuthor = "I'm an blogger."
-	tweet = ""
-	share = ""
+	aboutAuthor = "Christian | Husband | Expectant father"
+	tweet = "tweet"
+	share = "share"
+
 	# 404 page
 	title404 = ""
 	subtitle404 = ""

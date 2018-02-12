@@ -1,6 +1,6 @@
 ---
 title: About Noel
-linkTitle: About
+linkTitle: about
 menu: main
 ---
 About me
