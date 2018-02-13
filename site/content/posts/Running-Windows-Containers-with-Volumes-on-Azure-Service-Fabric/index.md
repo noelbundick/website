@@ -3,6 +3,8 @@ title: Running Windows Containers with Volumes on Azure Service Fabric
 tags:
   - azure
   - service fabric
+  - windows containers
+  - minecraft
 date: 2018-02-10 15:56:10
 aliases:
   - /2018/02/10/Running-Windows-Containers-with-Volumes-on-Azure-Service-Fabric/

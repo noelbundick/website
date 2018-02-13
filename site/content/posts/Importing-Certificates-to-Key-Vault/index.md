@@ -3,6 +3,7 @@ title: Importing Certificates to Key Vault
 tags:
   - azure
   - service fabric
+  - key vault
 date: 2017-06-13 16:19:09
 aliases:
   - /2017/06/13/Importing-Certificates-to-Key-Vault/
