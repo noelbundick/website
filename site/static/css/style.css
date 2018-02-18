@@ -43,8 +43,8 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 .icon-facebook-rect:before { content: '\e803'; }
 
 /* Spacing */
-.post h1, h3, h4, h5, p, .post-body ul, ol, pre {
-margin-bottom: 20px;
+.post h1, h3, h4, h5, p, pre {
+	margin-bottom: 20px;
 }
 
 /* Base */
@@ -170,10 +170,6 @@ a,
 	transition: all 0.15s ease;
 }
 
-ul, ol 	{ margin:0; padding:0; margin-bottom: 20px; }
-ul { list-style-type:circle; }
-ol { list-style: decimal; }
-
 /* Line Height */
 #post-body, p { line-height:1.7; }
 
@@ -193,8 +189,6 @@ em, i { font-style: italic; }
 	font: italic 14px/1.4em Georgia,serif;
 	color: #aaa;
 }
-
-
 
 .home h1 {
 	font-size: 30px;
@@ -658,9 +652,6 @@ code.hljs {
 	border-radius: 10px;
 }
 
-#post-body ul li {
-  padding-bottom: 0.5rem;
-}
 
 #post-body img {
   display: block;
@@ -682,3 +673,20 @@ twitterwidget {
 .four-o-four {
 	text-align: center;
 }
+
+/* LISTS */
+
+#post-body ul, #post-body ol {
+	padding-left: 2rem;
+	padding-bottom: 0.5rem;
+}
+
+#post-body ul li ul,
+#post-body ul li ol,
+#post-body ol li ul,
+#post-body ol li ol {
+	padding-bottom: 0;
+}
+
+ul { list-style-type:circle; }
+ol { list-style: decimal; }
