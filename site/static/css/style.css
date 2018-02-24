@@ -211,8 +211,9 @@ em, i { font-style: italic; }
 }
 
 .post h2 {
-	margin-bottom: 40px;
-	  font: 300 24px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	font: 300 24px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .post h2.subtitle {
@@ -690,3 +691,4 @@ twitterwidget {
 
 ul { list-style-type:circle; }
 ol { list-style: decimal; }
+strong { font-weight: bold; }
