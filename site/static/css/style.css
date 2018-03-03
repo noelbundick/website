@@ -653,10 +653,12 @@ code.hljs {
 	border-radius: 10px;
 }
 
-
 #post-body img {
   display: block;
-  margin: auto;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: 1rem;
 }
 
 twitterwidget {
