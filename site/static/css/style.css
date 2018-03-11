@@ -355,6 +355,7 @@ Post List
 
 #post-list li {
 	list-style-type: none;
+	height: 2rem;
 }
 
 #post-list a {
@@ -669,7 +670,6 @@ twitterwidget {
 	#post-list li {
 		overflow: hidden;
 		white-space: nowrap;
-		height: 2rem;
 	}
 }
 
