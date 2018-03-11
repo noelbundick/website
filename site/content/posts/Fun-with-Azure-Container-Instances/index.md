@@ -2,7 +2,6 @@
 title: Fun with Azure Container Instances
 tags:
   - azure
-  - containers
   - minecraft
   - aci
 date: 2017-08-03 17:32:39

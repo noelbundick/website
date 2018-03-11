@@ -2,7 +2,7 @@
 title: Bash on Windows + Azure Cloud Shell Quickstart
 tags:
   - azure
-  - bash
+  - wsl
   - azure cloud shell
 date: 2017-05-14 14:49:56
 aliases:

@@ -694,3 +694,8 @@ twitterwidget {
 ul { list-style-type:circle; }
 ol { list-style: decimal; }
 strong { font-weight: bold; }
+
+::selection {
+	color: #fff;
+	background-color: #2bbc8a;
+}

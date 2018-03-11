@@ -1,7 +1,7 @@
 ---
 title: Getting Started - Bash on Windows
 tags: 
-  - bash
+  - wsl
 date: 2017-05-08 18:00:00
 aliases:
   - /2017/05/08/Getting-Started-Bash-on-Windows/

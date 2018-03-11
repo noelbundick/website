@@ -2,7 +2,7 @@
 title: Supercharging the Azure Cloud Shell
 tags: 
   - azure
-  - bash
+  - wsl
   - azure cloud shell
 date: 2017-05-13 14:36:02
 aliases:
