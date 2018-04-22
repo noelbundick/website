@@ -9,8 +9,6 @@ aliases:
   - /2017/08/03/Fun-with-Azure-Container-Instances/
   - /2017/08/04/Fun-with-Azure-Container-Instances/
 ---
-
-
 # Fun with Azure Container Instances
 
 Azure Container Instances were [recently announced](https://azure.microsoft.com/en-us/blog/announcing-azure-container-instances/), making it easy for developers to spin up a container on-demand without having to provision and maintain a VM or a cluster.  It's been well received by the community, and there are already a [ton](https://docs.microsoft.com/en-us/azure/container-instances/container-instances-quickstart) [of](https://channel9.msdn.com/Shows/Tuesdays-With-Corey/Tuesdays-with-Corey-Azure-Container-Instances) [great](https://channel9.msdn.com/Shows/Azure-Friday/Using-Kubernetes-with-Azure-Container-Instances) [resources](https://channel9.msdn.com/Shows/Azure-Friday/Azure-Container-Instances) to help you get started.
