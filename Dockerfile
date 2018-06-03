@@ -1,6 +1,6 @@
 FROM alpine as build
 
-ENV HUGO_VERSION 0.36
+ENV HUGO_VERSION 0.41
 ENV HUGO_BINARY hugo_${HUGO_VERSION}_linux-64bit
 ADD https://github.com/spf13/hugo/releases/download/v${HUGO_VERSION}/${HUGO_BINARY}.tar.gz /usr/local/hugo/
 RUN tar xzf /usr/local/hugo/${HUGO_BINARY}.tar.gz -C /usr/local/hugo/ \
@@ -11,7 +11,7 @@ COPY /site /site
 WORKDIR /site
 RUN hugo
 
-FROM nginx:1.13.8-alpine
+FROM nginx:stable-alpine
 
 # Enable SSH with a hard-coded password
 # - https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-ssh-support
