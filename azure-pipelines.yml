@@ -28,6 +28,6 @@ steps:
     azureSubscription: $(azureSubscription)
     scriptLocation: inlineScript
     inlineScript: |
-      az group create -n $resourceGroup -l $location
-      az group deployment create -g $resourceGroup --template-file ./azure/azuredeploy.json --parameters baseName=$baseName
+      az group create -n $(resourceGroup) -l $(location)
+      az group deployment create -g $(resourceGroup) --template-file ./azure/azuredeploy.json --parameters baseName=$(baseName)
 
