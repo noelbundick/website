@@ -9,6 +9,11 @@ variables:
   baseName: noelbundick
 
 steps:
+
+# Need to checkout submodules to pull the website theme
+- checkout: self
+  submodules: true
+
 - task: Bash@3
   displayName: Build site using Hugo
   inputs:
