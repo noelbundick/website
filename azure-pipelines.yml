@@ -5,8 +5,24 @@ variables:
   azureSubscription: 'Noel (7a458fa8-81c7-438f-a27e-2e11fdf4ecca)'
   resourceGroup: website
   location: westus2
+  hugoVersion: '0.41'
 
 steps:
+- task: Bash@3
+  displayName: Build site using Hugo
+  inputs:
+    targetType: inline
+    script: |
+      # Install Hugo
+      mkdir hugo
+      pushd hugo
+      curl -Lo hugo.tar.gz https://github.com/spf13/hugo/releases/download/v${hugoVersion}/hugo_${hugoVersion}_linux-64bit.tar.gz
+      tar xvf hugo.tar.gz
+      hugo version
+      popd
+      # Build the site
+      hugo
+
 - task: AzureCLI@1
   displayName: Hello world
   inputs:
