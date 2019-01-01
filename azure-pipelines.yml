@@ -31,3 +31,10 @@ steps:
       az group create -n $(resourceGroup) -l $(location)
       az group deployment create -g $(resourceGroup) --template-file ./azure/azuredeploy.json --parameters baseName=$(baseName)
 
+- task: AzureCLI@1
+  displayName: Deploy site content
+  inputs:
+    azureSubscription: $(azureSubscription)
+    scriptLocation: inlineScript
+    inlineScript: |
+      az storage blob upload-batch --account-name $(baseName) -d '$web' -s ./site/public
