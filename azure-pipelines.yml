@@ -1,0 +1,16 @@
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+variables:
+  azureSubscription: 'Noel (7a458fa8-81c7-438f-a27e-2e11fdf4ecca)'
+  resourceGroup: website
+  location: westus2
+
+steps:
+- task: AzureCLI@1
+  displayName: Hello world
+  inputs:
+    azureSubscription: $(azureSubscription)
+    scriptLocation: inlineScript
+    inlineScript: |
+      echo 'Hello, world!'
