@@ -9,9 +9,10 @@
   },
   "variables": {
     "aciName": "[concat(parameters('baseName'), '-bootstrap')]",
+    "functionappName": "[concat(parameters('baseName'), '-proxy')]",
     "identityName": "[concat(parameters('baseName'), '-bootstrap')]",
+    "insightsName": "[concat(parameters('baseName'), '-proxy')]",
     "storageName": "[toLower(parameters('baseName'))]",
-
     "bootstrapRoleAssignmentId": "[guid(concat(resourceGroup().id, 'contributor'))]",
     "contributorRoleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"
   },
@@ -97,6 +98,62 @@
             }
           }
         ]
+      }
+    },
+    {
+      "name": "[variables('insightsName')]",
+      "apiVersion": "2015-05-01",
+      "type": "Microsoft.Insights/components",
+      "location": "West US 2",
+      "tags": {
+        "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', variables('functionappName'))]": "Resource"
+      },
+      "properties": {
+        "ApplicationId": "[variables('functionappName')]"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2018-02-01",
+      "name": "[variables('functionappName')]",
+      "location": "[resourceGroup().location]",
+      "kind": "functionapp",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('insightsName'))]"
+      ],
+      "properties": {
+        "name": "[variables('functionAppName')]",
+        "reserved": false,
+        "clientAffinityEnabled": false,
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "dotnet"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2018-02-01').keys[0].value)]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~2"
+            },
+            {
+              "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2018-02-01').keys[0].value)]"
+            },
+            {
+              "name": "WEBSITE_CONTENTSHARE",
+              "value": "[toLower(variables('functionAppName'))]"
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('Microsoft.Insights/components/', variables('insightsName')), '2015-05-01').InstrumentationKey]"
+            }
+          ]
+        }
       }
     }
   ],
