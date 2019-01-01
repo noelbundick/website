@@ -6,6 +6,7 @@ variables:
   resourceGroup: website
   location: westus2
   hugoVersion: 0.41
+  hugoVersion: '0.41'
   baseName: noelbundick
 
 steps:
