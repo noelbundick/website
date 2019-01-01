@@ -20,7 +20,7 @@ steps:
       ./hugo version
       # Build the site
       cd site
-      $(Build.SourcesDirectory)/hugo
+      $(Build.SourcesDirectory)/hugo -v
 
 - task: AzureCLI@1
   displayName: Deploy Azure Resources
