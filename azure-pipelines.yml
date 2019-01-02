@@ -31,9 +31,10 @@ steps:
 - task: Bash@3
   displayName: Configure Cloudflare DNS
   inputs:
-    targetType: filePath
-    filePath: azure/configure-dns.sh
-    arguments: '--hostname $(domainName) --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --target $(baseName)-proxy.azurewebsites.net'
+    targetType: inline
+    script: |
+      ./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname $(domainName) --target $(baseName)-proxy.azurewebsites.net 
+      ./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname awverify.$(domainName) --target awverify.$(baseName)-proxy.azurewebsites.net 
 
 
 - task: AzureCLI@1

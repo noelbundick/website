@@ -6,9 +6,10 @@ HOSTNAME=''
 EMAIL=''
 KEY=''
 TARGET=''
+PROXIED=true
 
 show_usage() {
-  echo "Usage: configure-dns.sh --hostname <hostname> --email <email> --api-key <api key> --target <target>"
+  echo "Usage: configure-dns.sh --hostname <hostname> --email <email> --api-key <api key> --target <target> --proxied <true/false>"
 }
 
 parse_arguments() {
@@ -33,6 +34,10 @@ parse_arguments() {
         ;;
       --target)
         TARGET=$2
+        shift 2
+        ;;
+      --proxied)
+        PROXIED=$2
         shift 2
         ;;
       --)
@@ -73,7 +78,7 @@ execute() {
   ZONE=$(cloudflare "https://api.cloudflare.com/client/v4/zones?name=$DOMAIN")
   ZONE_ID=$(echo $ZONE | jq -r '.result[0].id')
 
-  DATA=$(jq -c -n '{type:"CNAME", name:$name, content:$content, proxied: true}' --arg name $HOSTNAME --arg content $TARGET)
+  DATA=$(jq -c -n '{type:"CNAME", name:$name, content:$content, proxied:$proxied}' --arg name $HOSTNAME --arg content $TARGET --argjson proxied $PROXIED)
 
   RECORD=$(cloudflare "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records?type=CNAME&name=$HOSTNAME")
   RECORD_ID=$(echo $RECORD | jq -r '.result[0].id')
@@ -83,6 +88,18 @@ execute() {
   else
     cloudflare_update PUT "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records/$RECORD_ID" $DATA
   fi
+
+  # wait for DNS record to be visible
+  while true; do
+    echo "Checking for DNS entry"
+    
+    nslookup $HOSTNAME
+    if [ $? -eq 0 ]; then
+      break
+    fi
+    
+    sleep 1
+  done
 }
 
 parse_arguments "$@"
