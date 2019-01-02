@@ -73,7 +73,7 @@ execute() {
   ZONE=$(cloudflare "https://api.cloudflare.com/client/v4/zones?name=$DOMAIN")
   ZONE_ID=$(echo $ZONE | jq -r '.result[0].id')
 
-  DATA=$(jq -c -n '{"type":"CNAME","name":$name,"content":$content}' --arg name $HOSTNAME --arg content $TARGET)
+  DATA=$(jq -c -n '{type:"CNAME", name:$name, content:$content, proxied: true}' --arg name $HOSTNAME --arg content $TARGET)
 
   RECORD=$(cloudflare "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records?type=CNAME&name=$HOSTNAME")
   RECORD_ID=$(echo $RECORD | jq -r '.result[0].id')
