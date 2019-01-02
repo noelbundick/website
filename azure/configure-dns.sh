@@ -94,7 +94,7 @@ execute() {
   while true; do
     echo "Checking for DNS entry"
     
-    nslookup $HOSTNAME 1.1.1.1
+    dig @1.1.1.1 $HOSTNAME | grep 'ANSWER SECTION'
     if [ $? -eq 0 ]; then
       break
     fi
