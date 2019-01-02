@@ -7,6 +7,7 @@ variables:
   location: westus2
   hugoVersion: 0.41
   baseName: noelbundick
+  domainName: proxy.noelbundick.com
 
 steps:
 
@@ -33,7 +34,7 @@ steps:
     azureSubscription: $(azureSubscription)
     scriptLocation: scriptPath
     scriptPath: azure/deploy-resources.sh
-    arguments: '-g $(resourceGroup) -l $(location) -n $(baseName)'
+    arguments: '-g $(resourceGroup) -l $(location) -n $(baseName) -d $(domainName)'
 
 - task: AzureCLI@1
   displayName: Deploy site content

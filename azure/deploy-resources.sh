@@ -5,9 +5,10 @@ IFS=$'\n\t'
 RG=''
 LOCATION=''
 BASENAME=''
+DOMAINNAME=''
 
 show_usage() {
-  echo "Usage: deploy-resources.sh --resource-group <rg> --location <location> --base-name <base-name>"
+  echo "Usage: deploy-resources.sh --resource-group <rg> --location <location> --base-name <base-name> --domain-name <domain-name>"
 }
 
 parse_arguments() {
@@ -30,6 +31,10 @@ parse_arguments() {
         BASENAME=$2
         shift 2
         ;;
+      -d|--domain-name)
+        DOMAINNAME=$2
+        shift 2
+        ;;
       --)
         shift
         break
@@ -47,7 +52,7 @@ parse_arguments() {
 }
 
 validate_arguments() {
-  if [[ -z $RG || -z $LOCATION || -z $BASENAME ]]; then
+  if [[ -z $RG || -z $LOCATION || -z $BASENAME || -z $DOMAINNAME ]]; then
     show_usage
     exit 1
   fi
@@ -55,7 +60,7 @@ validate_arguments() {
 
 deploy() {
   az group create -n $RG -l $LOCATION
-  RG_DEPLOYMENT=$(az group deployment create -g $RG --template-file ./azuredeploy.json --parameters baseName=$BASENAME -o json)
+  RG_DEPLOYMENT=$(az group deployment create -g $RG --template-file ./azuredeploy.json --parameters baseName=$BASENAME customHostname=$DOMAINNAME -o json)
 
   # Extract output vars
   FUNCTION_APP=$(echo $RG_DEPLOYMENT | jq -r .properties.outputs.functionappName.value)

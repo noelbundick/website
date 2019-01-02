@@ -5,6 +5,10 @@
     "baseName": {
       "type": "string",
       "defaultValue": "noelbundick"
+    },
+    "customHostname": {
+      "type": "string",
+      "defaultValue": "www.noelbundick.com"
     }
   },
   "variables": {
@@ -155,6 +159,17 @@
           ]
         }
       }
+    },
+    {
+      "type": "Microsoft.Web/sites/hostnameBindings",
+      "apiVersion": "2018-02-01",
+      "name": "[concat(variables('functionappName'), '/', parameters('customHostname'))]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('functionappName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('insightsName'))]"
+      ],
+      "properties": {}
     }
   ],
   "outputs": {
