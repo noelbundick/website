@@ -32,7 +32,7 @@ steps:
   inputs:
     azureSubscription: $(azureSubscription)
     scriptLocation: scriptPath
-    scriptPath: deploy-resources.sh
+    scriptPath: azure/deploy-resources.sh
     arguments: '-g $(resourceGroup) -l $(location) -n $(baseName)'
 
 - task: AzureCLI@1
