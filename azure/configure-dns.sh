@@ -92,7 +92,7 @@ execute() {
   # wait for DNS record to be visible
   set +eo pipefail
   while true; do
-    echo "Checking for DNS entry"
+    echo "Checking for DNS entry: $HOSTNAME"
     
     dig @1.1.1.1 $HOSTNAME | grep 'ANSWER SECTION'
     if [ $? -eq 0 ]; then
