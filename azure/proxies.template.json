@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json.schemastore.org/proxies",
+  "proxies": {
+    "wildcard": {
+      "matchCondition": {
+        "route": "/{*path}"
+      },
+      "backendUri": "https://storageaccount.z5.web.core.windows.net/{path}"
+    }
+  }
+}

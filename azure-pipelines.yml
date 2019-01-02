@@ -31,10 +31,9 @@ steps:
   displayName: Deploy Azure Resources
   inputs:
     azureSubscription: $(azureSubscription)
-    scriptLocation: inlineScript
-    inlineScript: |
-      az group create -n $(resourceGroup) -l $(location)
-      az group deployment create -g $(resourceGroup) --template-file ./azure/azuredeploy.json --parameters baseName=$(baseName)
+    scriptLocation: scriptPath
+    scriptPath: deploy-resources.sh
+    arguments: '-g $(resourceGroup) -l $(location) -n $(baseName)'
 
 - task: AzureCLI@1
   displayName: Deploy site content

@@ -157,5 +157,18 @@
       }
     }
   ],
-  "outputs": {}
+  "outputs": {
+    "functionappName": {
+      "type": "string",
+      "value": "[variables('functionappName')]"
+    },
+    "storageName": {
+      "type": "string",
+      "value": "[variables('storageName')]"
+    },
+    "webEndpoint": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2018-02-01').primaryEndpoints.web]"
+    }
+  }
 }
