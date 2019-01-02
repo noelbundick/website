@@ -7,7 +7,7 @@ variables:
   location: westus2
   hugoVersion: 0.41
   baseName: noelbundick
-  domainName: proxy.noelbundick.com
+  domainName: www.noelbundick.com
 
 steps:
 
