@@ -8,6 +8,7 @@ variables:
   hugoVersion: 0.41
   baseName: noelbundick
   domainName: proxy.noelbundick.com
+  email: noelbundick@gmail.com
 
 steps:
 
@@ -27,6 +28,14 @@ steps:
       # Build the site
       cd site
       $(Build.SourcesDirectory)/hugo -v
+
+- task: Bash@3
+  displayName: Configure Cloudflare DNS
+  inputs:
+    targetType: filePath
+    filePath: azure/configure-dns.sh
+    arguments: '--hostname $(domainName) --email $(email) --api-key $(apiKey) --target $(baseName)-proxy.azurewebsites.net'
+
 
 - task: AzureCLI@1
   displayName: Deploy Azure Resources
