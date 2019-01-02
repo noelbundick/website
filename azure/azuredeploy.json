@@ -18,7 +18,13 @@
     "insightsName": "[concat(parameters('baseName'), '-proxy')]",
     "storageName": "[toLower(parameters('baseName'))]",
     "bootstrapRoleAssignmentId": "[guid(concat(resourceGroup().id, 'contributor'))]",
-    "contributorRoleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"
+    "contributorRoleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+
+    "domainParts": "[split(parameters('customHostname'), '.')]",
+    "numDomainParts": "[length(variables('domainParts'))]",
+    "lastDomainPart": "[variables('domainParts')[sub(variables('numDomainParts'), 1)]]",
+    "penultimateDomainPart": "[variables('domainParts')[sub(variables('numDomainParts'), 2)]]",
+    "nakedDomain": "[concat(variables('penultimateDomainPart'), '.', variables('lastDomainPart'))]"
   },
   "resources": [
     {
@@ -164,6 +170,17 @@
       "type": "Microsoft.Web/sites/hostnameBindings",
       "apiVersion": "2018-02-01",
       "name": "[concat(variables('functionappName'), '/', parameters('customHostname'))]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('functionappName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('insightsName'))]"
+      ],
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.Web/sites/hostnameBindings",
+      "apiVersion": "2018-02-01",
+      "name": "[concat(variables('functionappName'), '/', variables('nakedDomain'))]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites', variables('functionappName'))]",
