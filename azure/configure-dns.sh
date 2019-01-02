@@ -62,7 +62,7 @@ validate_arguments() {
     exit 1
   fi
 
-  DOMAIN=$(cut -d '.' -f 2- <<< "$HOSTNAME")
+  DOMAIN=$(echo $HOSTNAME | rev | cut -d '.' -f -2  | rev)
 }
 
 cloudflare() {
@@ -70,7 +70,7 @@ cloudflare() {
 }
 
 cloudflare_update() {
-  echo "sending: $3"
+  echo "sending: $3 to $2"
   curl -s -X $1 -H "X-Auth-Email: $EMAIL" -H "X-Auth-Key: $KEY" -H 'Content-Type: application/json' $2 --data $3
 }
 
@@ -90,16 +90,18 @@ execute() {
   fi
 
   # wait for DNS record to be visible
+  set +eo pipefail
   while true; do
     echo "Checking for DNS entry"
     
-    nslookup $HOSTNAME
+    nslookup $HOSTNAME 1.1.1.1
     if [ $? -eq 0 ]; then
       break
     fi
-    
+
     sleep 1
   done
+  set -eo pipefail
 }
 
 parse_arguments "$@"

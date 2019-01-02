@@ -34,7 +34,7 @@ steps:
     targetType: inline
     script: |
       ./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname $(domainName) --target $(baseName)-proxy.azurewebsites.net 
-      ./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname awverify.$(domainName) --target awverify.$(baseName)-proxy.azurewebsites.net 
+      ./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname awverify.$(domainName) --target awverify.$(baseName)-proxy.azurewebsites.net --proxied false
 
 
 - task: AzureCLI@1
