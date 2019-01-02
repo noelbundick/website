@@ -35,8 +35,8 @@ steps:
     script: |
       # Staged DNS cutover (add domain, then swap)
       NAKED_DOMAIN=`echo $(domainName) | rev | cut -d '.' -f -2  | rev`
-      ./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname awverify.$NAKED_DOMAIN --target awverify.$(baseName)-proxy.azurewebsites.net
-      ./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname awverify.$(domainName) --target awverify.$(baseName)-proxy.azurewebsites.net --proxied false
+      ./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname awverify.$NAKED_DOMAIN --target awverify.$(baseName)-proxy.azurewebsites.net --cdn false
+      ./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname awverify.$(domainName) --target awverify.$(baseName)-proxy.azurewebsites.net --cdn false
       # For automated DNS cutover
       #./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname $NAKED_DOMAIN --target $(baseName)-proxy.azurewebsites.net
       #./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname $(domainName) --target $(baseName)-proxy.azurewebsites.net 
