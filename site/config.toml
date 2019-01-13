@@ -11,7 +11,7 @@ paginate = 20
 googleAnalytics = "UA-96602440-1"
 
 # Disable comments by leaving disqusShortname empty
-disqusShortname = "noelbundick"
+# disqusShortname = "noelbundick"
 
 [mediaTypes]
 [mediaTypes."application/atom"]
