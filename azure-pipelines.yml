@@ -8,6 +8,7 @@ variables:
   hugoVersion: 0.53
   baseName: noelbundick
   domainName: www.noelbundick.com
+  deployResources: false
 
 steps:
 
@@ -37,6 +38,7 @@ steps:
 
 - task: Bash@3
   displayName: Configure Cloudflare DNS
+  condition: and(succeeded(), variables['deployResources'])
   inputs:
     targetType: inline
     script: |
@@ -48,9 +50,9 @@ steps:
       #./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname $NAKED_DOMAIN --target $(baseName)-proxy.azurewebsites.net
       #./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname $(domainName) --target $(baseName)-proxy.azurewebsites.net 
 
-
 - task: AzureCLI@1
   displayName: Deploy Azure Resources
+  condition: and(succeeded(), variables['deployResources'])
   inputs:
     azureSubscription: $(azureSubscription)
     scriptLocation: scriptPath

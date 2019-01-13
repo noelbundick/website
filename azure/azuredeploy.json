@@ -185,7 +185,7 @@
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites', variables('functionappName'))]",
         "[resourceId('Microsoft.Insights/components', variables('insightsName'))]",
-        "[resourceId('Microsoft.Web/sites/hostnameBindings', concat(variables('functionappName'), '/', parameters('customHostname')))]"
+        "[resourceId('Microsoft.Web/sites/hostnameBindings', variables('functionappName'), parameters('customHostname'))]"
       ],
       "properties": {}
     }
