@@ -15,7 +15,7 @@ disqusShortname = "noelbundick"
 
 [mediaTypes]
 [mediaTypes."application/atom"]
-  suffix = "xml"
+  suffixes = ["xml"]
 
 [outputFormats]
 [outputFormats.RSS]

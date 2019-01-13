@@ -5,7 +5,7 @@ variables:
   azureSubscription: 'Noel (7a458fa8-81c7-438f-a27e-2e11fdf4ecca)'
   resourceGroup: website
   location: westus2
-  hugoVersion: 0.41
+  hugoVersion: 0.53
   baseName: noelbundick
   domainName: www.noelbundick.com
 
@@ -14,6 +14,13 @@ steps:
 # Need to checkout submodules to pull the website theme
 - checkout: self
   submodules: true
+
+- task: Bash@3
+  displayName: Build site using Hugo
+  inputs:
+    targetType: inline
+    script: |
+      ./pull-gists.sh $(githubUsername) $(githubPAT)
 
 - task: Bash@3
   displayName: Build site using Hugo
@@ -33,11 +40,11 @@ steps:
   inputs:
     targetType: inline
     script: |
-      # Staged DNS cutover (add domain, then swap)
+      # Staged DNS cutover (add domain & verify, but swap live DNS record later)
       NAKED_DOMAIN=`echo $(domainName) | rev | cut -d '.' -f -2  | rev`
       ./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname awverify.$NAKED_DOMAIN --target awverify.$(baseName)-proxy.azurewebsites.net --cdn false
       ./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname awverify.$(domainName) --target awverify.$(baseName)-proxy.azurewebsites.net --cdn false
-      # For automated DNS cutover
+      # Automate everything, update live DNS now
       #./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname $NAKED_DOMAIN --target $(baseName)-proxy.azurewebsites.net
       #./azure/configure-dns.sh --email $(cloudflareEmail) --api-key $(cloudflareApiKey) --hostname $(domainName) --target $(baseName)-proxy.azurewebsites.net 
 
