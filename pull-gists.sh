@@ -20,6 +20,7 @@ for gist in $GISTS; do
   HTML_URL=$(_jq -r '.html_url')
   RAW_URL=$(_jq -r '.files["README.md"].raw_url')
   POST_DATE=$(_jq -r '.created_at | fromdate | strftime("%Y-%m-%d")')
+  FILES=$(_jq -c '[ .files[] | select((.filename | contains("README.md") | not) and (.filename | contains("LICENSE") | not)) | .filename ]')
   
   FILENAME=$(echo $NAME | sed 's/[^[:alnum:]]/-/g')
   POST="site/content/gists/$FILENAME.md"
@@ -32,6 +33,7 @@ tags:
   - gist
 date: $POST_DATE
 gist_url: $HTML_URL
+gist_embed_files: $FILES
 ---
 EOF
 

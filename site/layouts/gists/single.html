@@ -26,6 +26,10 @@
     </header>
     <section id="post-body">
         {{ .Content }}
+        {{ range .Params.gist_embed_files }}
+        <h3>{{ . }}</h3>
+        <script src="{{ $.Params.gist_url }}.js?file={{ . }}"></script>
+        {{ end }}
     </section>
 </article>
 
