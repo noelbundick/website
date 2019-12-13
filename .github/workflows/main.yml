@@ -57,6 +57,8 @@ jobs:
         # Automate everything, update live DNS now
         #./azure/configure-dns.sh --email $cloudflareEmail --api-key $cloudflareApiKey --hostname $NAKED_DOMAIN --target $baseName-proxy.azurewebsites.net
         #./azure/configure-dns.sh --email $cloudflareEmail --api-key $cloudflareApiKey --hostname $domainName --target $baseName-proxy.azurewebsites.net 
+      env:
+        cloudflareApiKey: ${{ secrets.cloudflareApiKey }}
 
     - name: Azure Login
       uses: azure/login@v1
