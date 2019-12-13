@@ -3,6 +3,8 @@ on:
   push:
     branches:
     - master
+  schedule:
+  - cron: '0 0 * * *'   # daily to pick up new gists
 
 env:
   resourceGroup: website
