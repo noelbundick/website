@@ -43,7 +43,7 @@ jobs:
         hugo -v
 
     - name: Configure Cloudflare DNS
-      if: success() && env.deployResources
+      if: success() && env.deployResources == true
       run: |
         # Staged DNS cutover (add domain & verify, but swap live DNS record later)
         NAKED_DOMAIN=`echo $domainName | rev | cut -d '.' -f -2  | rev`
@@ -59,7 +59,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Deploy Azure Resources
-      if: success() && env.deployResources
+      if: success() && env.deployResources == true
       uses: azure/CLI@v1
       with:
         inlineScript: azure/deploy-resources.sh -g $resourceGroup -l $location -n $baseName -d $domainName
