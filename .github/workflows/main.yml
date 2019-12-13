@@ -69,7 +69,7 @@ jobs:
       if: success() && env.deployResources == 'true'
       uses: azure/CLI@v1
       with:
-        inlineScript: azure/deploy-resources.sh -g $resourceGroup -l $location -n $baseName -d $domainName
+        inlineScript: azure/deploy-resources.sh -g ${{ env.resourceGroup }} -l ${{ env.location }} -n ${{ env.baseName }} -d ${{ env.domainName }}
 
     - name: Deploy site content
       uses: azure/CLI@v1
