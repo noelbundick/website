@@ -5,9 +5,14 @@ on:
     - master
 
 env:
+  resourceGroup: website
+  location: westus2
+  hugoVersion: '0.53'
   githubUsername: noelbundick
-  cloudflareEmail: noelbundick@gmail.com
   baseName: noelbundick
+  domainName: www.noelbundick.com
+  cloudflareEmail: noelbundick@gmail.com
+  deployResources: false
 
 jobs:
   build:
@@ -30,17 +35,34 @@ jobs:
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
       with:
-        hugo-version: '0.53'
+        hugo-version: ${{ env.hugoVersion }}
 
     - name: Build site using Hugo
       run: |
         cd site
         hugo -v
 
+    - name: Configure Cloudflare DNS
+      if: ${{ success() && env.deployResources }}
+      run: |
+        # Staged DNS cutover (add domain & verify, but swap live DNS record later)
+        NAKED_DOMAIN=`echo $domainName | rev | cut -d '.' -f -2  | rev`
+        ./azure/configure-dns.sh --email $cloudflareEmail --api-key $cloudflareApiKey --hostname awverify.$NAKED_DOMAIN --target awverify.$baseName-proxy.azurewebsites.net --cdn false
+        ./azure/configure-dns.sh --email $cloudflareEmail --api-key $cloudflareApiKey --hostname awverify.$domainName --target awverify.$baseName-proxy.azurewebsites.net --cdn false
+        # Automate everything, update live DNS now
+        #./azure/configure-dns.sh --email $cloudflareEmail --api-key $cloudflareApiKey --hostname $NAKED_DOMAIN --target $baseName-proxy.azurewebsites.net
+        #./azure/configure-dns.sh --email $cloudflareEmail --api-key $cloudflareApiKey --hostname $domainName --target $baseName-proxy.azurewebsites.net 
+
     - name: Azure Login
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy Azure Resources
+      if: ${{ success() && env.deployResources }}
+      uses: azure/CLI@v1
+      with:
+        inlineScript: azure/deploy-resources.sh -g $resourceGroup -l $location -n $baseName -d $domainName
 
     - name: Deploy site content
       uses: azure/CLI@v1
