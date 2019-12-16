@@ -6,6 +6,7 @@ on:
 
 env:
   githubUsername: noelbundick
+  cloudflareEmail: noelbundick@gmail.com
 
 jobs:
   build:
@@ -25,6 +26,16 @@ jobs:
       run: ./pull-gists.sh $githubUsername $githubPAT
       env:
         githubPAT: ${{ secrets.githubPAT }}
+
+    - name: Setup Hugo
+      uses: peaceiris/actions-hugo@v2
+      with:
+        hugo-version: '0.53'
+
+    - name: Build site using Hugo
+      run: |
+        cd site
+        hugo -v
 
     - name: Run a one-line script
       run: echo Hello, world!
