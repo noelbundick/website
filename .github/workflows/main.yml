@@ -22,7 +22,7 @@ jobs:
         git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
 
     - name: Pull GitHub gists in as posts
-      run: ./pull-gists.sh $(githubUsername) ${{ secrets.GITHUB_TOKEN }}
+      run: ./pull-gists.sh $githubUsername ${{ secrets.GITHUB_TOKEN }}
 
     - name: Run a one-line script
       run: echo Hello, world!
