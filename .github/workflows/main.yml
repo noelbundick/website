@@ -7,6 +7,7 @@ on:
 env:
   githubUsername: noelbundick
   cloudflareEmail: noelbundick@gmail.com
+  baseName: noelbundick
 
 jobs:
   build:
@@ -16,7 +17,6 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Checkout submodules
-      shell: bash
       run: |
         auth_header="$(git config --local --get http.https://github.com/.extraheader)"
         git submodule sync --recursive
@@ -37,5 +37,12 @@ jobs:
         cd site
         hugo -v
 
-    - name: Run a one-line script
-      run: echo Hello, world!
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy site content
+      uses: azure/CLI@v1
+      with:
+        inlineScript: az storage blob upload-batch --account-name $baseName -d '$web' -s ./site/public
