@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 USER=$1
 PAT=$2
