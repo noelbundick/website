@@ -5,6 +5,7 @@ on:
     - master
   schedule:
   - cron: '0 0 * * *'   # daily to pick up new gists
+  repository_dispatch:  # manual deployments via API (https://api.github.com/repos/noelbundick/website/dispatches)
 
 env:
   resourceGroup: website
