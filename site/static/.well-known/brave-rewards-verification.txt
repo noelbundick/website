@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: noelbundick.com
+Token: 7ba78751c40e5a6a9e6b8b4fc52ee670a0736d05993ffc48a5b63c3994a894b4
