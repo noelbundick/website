@@ -21,6 +21,7 @@ jobs:
       - name: Pull GitHub gists in as posts
         run: ./pull-gists.sh $githubUsername $githubPAT
         env:
+          githubUsername: noelbundick
           githubPAT: ${{ secrets.githubPAT }}
 
       - name: Build And Deploy
