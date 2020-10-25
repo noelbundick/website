@@ -87,7 +87,6 @@ jobs:
   close_pr:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
-    name: Close Pull Request Job
     steps:
       - name: Azure Login
         if: success() && env.deployResources == 'true'
