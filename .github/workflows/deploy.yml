@@ -64,14 +64,12 @@ jobs:
           pat: ${{ secrets.WEBSITE_PAT }}
 
       - name: Get static site key
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            SITE_ID=$(az group show -n $resourceGroup --query tags.site -o tsv)
+        run: |
+          SITE_ID=$(az group show -n $resourceGroup --query tags.site -o tsv)
 
-            AZURE_STATIC_APPS_KEY=$(az resource invoke-action --ids $SITE_ID --action listSecrets --query properties.apiKey -o tsv)
-            echo "::add-mask::$AZURE_STATIC_APPS_KEY"
-            echo "AZURE_STATIC_APPS_KEY=$AZURE_STATIC_APPS_KEY" >> $GITHUB_ENV
+          AZURE_STATIC_APPS_KEY=$(az resource invoke-action --ids $SITE_ID --action listSecrets --query properties.apiKey -o tsv)
+          echo "::add-mask::$AZURE_STATIC_APPS_KEY"
+          echo "AZURE_STATIC_APPS_KEY=$AZURE_STATIC_APPS_KEY" >> $GITHUB_ENV
 
       - name: Build And Deploy
         id: builddeploy
@@ -95,14 +93,12 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Get static site key
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            SITE_ID=$(az group show -n $resourceGroup --query tags.site -o tsv)
+        run: |
+          SITE_ID=$(az group show -n $resourceGroup --query tags.site -o tsv)
 
-            AZURE_STATIC_APPS_KEY=$(az resource invoke-action --ids $SITE_ID --action listSecrets --query properties.apiKey -o tsv)
-            echo "::add-mask::$AZURE_STATIC_APPS_KEY"
-            echo "AZURE_STATIC_APPS_KEY=$AZURE_STATIC_APPS_KEY" >> $GITHUB_ENV
+          AZURE_STATIC_APPS_KEY=$(az resource invoke-action --ids $SITE_ID --action listSecrets --query properties.apiKey -o tsv)
+          echo "::add-mask::$AZURE_STATIC_APPS_KEY"
+          echo "AZURE_STATIC_APPS_KEY=$AZURE_STATIC_APPS_KEY" >> $GITHUB_ENV
 
       - name: Close Pull Request
         id: closepullrequest
