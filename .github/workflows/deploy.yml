@@ -24,17 +24,16 @@ jobs:
         with:
           submodules: true
 
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Detect deployResources
         run: |
           if git log -1 --pretty=%B | grep -q "^DEPLOY_INFRA"; then
             echo "deployResources=true" >> $GITHUB_ENV
           fi
-
-      - name: Azure Login
-        if: success() && env.deployResources == 'true'
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Install Bicep
         if: success() && env.deployResources == 'true'
@@ -87,7 +86,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Azure Login
-        if: success() && env.deployResources == 'true'
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
