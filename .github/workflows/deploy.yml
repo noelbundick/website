@@ -52,8 +52,8 @@ jobs:
         if: success() && env.deployResources == 'true'
         uses: azure/arm-deploy@v1
         with:
-          subscriptionId: $subscriptionId
-          resourceGroupName: $resourceGroup
+          subscriptionId: ${{ env.subscriptionId }}
+          resourceGroupName: ${{ env.resourceGroup }}
           template: azure/site.json
           parameters: repositoryToken=${{ secrets.WEBSITE_PAT }}
 
