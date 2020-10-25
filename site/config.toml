@@ -29,7 +29,7 @@ googleAnalytics = "UA-96602440-1"
 [params]
 	name = "Noel Bundick"
 	description = ""
-	bio = "Christian | Husband | Father | Software engineer"
+	bio = ""
 	gravatar = "noelbundick@gmail.com"
 
 	# Enter optionally your twitter account
@@ -56,7 +56,7 @@ googleAnalytics = "UA-96602440-1"
 	copyright = ""
 
 	# Sharing options and author information in posts
-	aboutAuthor = "Christian | Husband | Father"
+	aboutAuthor = ""
 	tweet = "tweet"
 	share = "share"
 
