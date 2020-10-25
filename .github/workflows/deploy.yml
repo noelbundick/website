@@ -41,7 +41,7 @@ jobs:
         run: |
           curl -Lo bicep https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
           chmod +x ./bicep
-          mv ./bicep /usr/local/bin/bicep
+          sudo mv ./bicep /usr/local/bin/bicep
 
       - name: Build ARM template
         if: success() && env.deployResources == 'true'
