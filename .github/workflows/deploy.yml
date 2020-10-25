@@ -8,9 +8,15 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
+  schedule:
+    - cron: "0 0 * * *" # daily to pick up new gists
+
+env:
+  subscriptionId: 7a458fa8-81c7-438f-a27e-2e11fdf4ecca
+  resourceGroup: staticsite
 
 jobs:
-  build_and_deploy_job:
+  deploy:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     steps:
@@ -18,31 +24,90 @@ jobs:
         with:
           submodules: true
 
+      - name: Detect deployResources
+        run: |
+          if git log -1 --pretty=%B | grep -q "^DEPLOY_INFRA"; then
+            echo "deployResources=true" >> $GITHUB_ENV
+          fi
+
+      - name: Azure Login
+        if: success() && env.deployResources == 'true'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Install Bicep
+        if: success() && env.deployResources == 'true'
+        run: |
+          curl -Lo bicep https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
+          chmod +x ./bicep
+          mv ./bicep /usr/local/bin/bicep
+
+      - name: Build ARM template
+        if: success() && env.deployResources == 'true'
+        run: bicep build azure/site.bicep
+
+      - name: Run ARM deploy
+        id: deployinfra
+        if: success() && env.deployResources == 'true'
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: $subscriptionId
+          resourceGroupName: $resourceGroup
+          template: azure/site.json
+          parameters: repositoryToken=${{ secrets.WEBSITE_PAT }}
+
       - name: Pull GitHub gists in as posts
-        run: ./pull-gists.sh $githubUsername $githubPAT
+        run: ./pull-gists.sh $username $pat
         env:
-          githubUsername: noelbundick
-          githubPAT: ${{ secrets.githubPAT }}
+          username: noelbundick
+          pat: ${{ secrets.WEBSITE_PAT }}
+
+      - name: Get static site key
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            SITE_ID=$(az group show -n $resourceGroup --query tags.site -o tsv)
+
+            AZURE_STATIC_APPS_KEY=$(az resource invoke-action --ids $SITE_ID --action listSecrets --query properties.apiKey -o tsv)
+            echo "::add-mask::$AZURE_STATIC_APPS_KEY"
+            echo "AZURE_STATIC_APPS_KEY=$AZURE_STATIC_APPS_KEY" >> $GITHUB_ENV
 
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_APPS_KEY }}
+          azure_static_web_apps_api_token: ${{ env.AZURE_STATIC_APPS_KEY }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
           app_location: /site
           api_location: api
           app_artifact_location: public
 
-  close_pull_request_job:
+  close_pr:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     name: Close Pull Request Job
     steps:
+      - name: Azure Login
+        if: success() && env.deployResources == 'true'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Get static site key
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            SITE_ID=$(az group show -n $resourceGroup --query tags.site -o tsv)
+
+            AZURE_STATIC_APPS_KEY=$(az resource invoke-action --ids $SITE_ID --action listSecrets --query properties.apiKey -o tsv)
+            echo "::add-mask::$AZURE_STATIC_APPS_KEY"
+            echo "AZURE_STATIC_APPS_KEY=$AZURE_STATIC_APPS_KEY" >> $GITHUB_ENV
+
       - name: Close Pull Request
         id: closepullrequest
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_APPS_KEY }}
+          azure_static_web_apps_api_token: ${{ env.AZURE_STATIC_APPS_KEY }}
           action: close
