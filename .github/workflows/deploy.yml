@@ -10,6 +10,7 @@ on:
       - main
   schedule:
     - cron: "0 0 * * *" # daily to pick up new gists
+  workflow_dispatch:
 
 env:
   subscriptionId: 7a458fa8-81c7-438f-a27e-2e11fdf4ecca
@@ -17,7 +18,7 @@ env:
 
 jobs:
   deploy:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
