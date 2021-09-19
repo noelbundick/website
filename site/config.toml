@@ -8,7 +8,7 @@ rssLink = "atom.xml"
 paginate = 20
 
 # Enter your tracking code to enable Google Analytics
-googleAnalytics = "UA-96602440-1"
+# googleAnalytics = "UA-96602440-1"
 
 # Disable comments by leaving disqusShortname empty
 # disqusShortname = "noelbundick"
