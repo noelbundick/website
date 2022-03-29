@@ -8,8 +8,12 @@ theme:
 paginate: 20
 params:
   author: Noel Bundick
+  customCSS:
+    - css/custom.css
+  hiddenPostSummaryInHomePage: true
   relativeURLs: true
   showPowerBy: false
+  showToc: true
 social:
   github: https://www.github.com/noelbundick
   twitter: https://twitter.com/acanthamoeba

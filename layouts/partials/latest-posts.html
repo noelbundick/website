@@ -1,0 +1,13 @@
+{{ if not .IsHome }}
+
+<section>
+  <ul class="post-list">
+    {{ range first 10 .Site.RegularPages }}
+    <li>
+      {{ .Date.Format "2006-01-02" }}
+      <a href='{{ .RelPermalink }}'>{{ .LinkTitle }}<h2>{{ .Description | markdownify }}</h2></a>
+    </li>
+    {{ end }}
+  </ul>
+</section>
+{{ end }}
