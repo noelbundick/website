@@ -1,11 +1,11 @@
 # Site settings
-baseurl = "/"
-languageCode = "en-us"
-title = "Noel Bundick"
-theme = "hugo-cactus-theme"
+# baseurl = "/"
+# languageCode = "en-us"
+# title = "Noel Bundick"
+# theme = "hugo-cactus-theme"
 rssLink = "atom.xml"
 
-paginate = 20
+# paginate = 20
 
 # Enter your tracking code to enable Google Analytics
 # googleAnalytics = "UA-96602440-1"
@@ -70,10 +70,10 @@ paginate = 20
     socialIconStyle = "circle"
 
 # Add additional social link entries underneath
-[social]
-    github   = "https://www.github.com/noelbundick"
-    twitter  = "https://www.twitter.com/acanthamoeba"
-    linkedin = "https://www.linkedin.com/in/noelbundick"
+# [social]
+#     github   = "https://www.github.com/noelbundick"
+#     twitter  = "https://www.twitter.com/acanthamoeba"
+#     linkedin = "https://www.linkedin.com/in/noelbundick"
 
 # Markdown engine configuration
 [blackFriday]
