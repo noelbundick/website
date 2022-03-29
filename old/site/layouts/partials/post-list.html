@@ -1,8 +1,0 @@
-<ul id="post-list">
-    {{ range where .Paginator.Pages "Section" "ne" "" }}
-        <li>
-            {{ .Date.Format "2006-01-02" }}
-            <a href='{{ .URL }}'>{{ .LinkTitle }}<h2>{{ .Description | markdownify }}</h2></a>
-        </li>
-    {{ end }}
-</ul>
