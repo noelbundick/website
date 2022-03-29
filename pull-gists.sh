@@ -24,7 +24,7 @@ for gist in $GISTS; do
   FILES=$(_jq -c '[ .files[] | select((.filename | contains("README.md") | not) and (.filename | contains("LICENSE") | not)) | .filename ]')
   
   FILENAME=$(echo $NAME | sed 's/[^[:alnum:]]/-/g')
-  POST="site/content/gists/$FILENAME.md"
+  POST="content/gists/$FILENAME.md"
   
 
   cat <<EOF > $POST
