@@ -1,0 +1,57 @@
+/* Base theme overrides */
+
+#archive {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+#section {
+  max-width: 800px;
+  margin: 48px auto 0 auto;
+  padding: 0 12px;
+}
+
+#page-404 {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+#list-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Header avatar image fade */
+
+.profile img.avatar {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  transition: 1s;
+}
+
+.profile:hover img.avatar {
+  -webkit-filter: none;
+  filter: none;
+  transition: 1s;
+}
+
+/* Post listings */
+ul.post-list {
+  max-width: 800px;
+  margin: 48px auto 0 auto;
+  padding: 0 12px;
+}
+
+ul.post-list li {
+	list-style-type: none;
+	height: 2rem;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+ul.post-list li a {
+	padding-left: 1rem;
+}
