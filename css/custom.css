@@ -24,11 +24,13 @@
   padding: 0 24px;
 }
 
-a, nav.navigation a {
+a, nav.navigation a,
+#archive .group .value .title a {
   color: #2bbc8a;
 }
 
-a:hover, nav.navigation a:hover {
+a:hover, nav.navigation a:hover,
+#archive .group .value .title a:hover {
   color: #2bbc8a;
   text-decoration: underline;
 }
@@ -55,16 +57,28 @@ nav.navigation {
   background: #242628;
 }
 
-#single .tags a {
+#single .tags a,
+#tags .tag a,
+#archive .group .value .tags a
+ {
   background: #242628;
   color: #c9cacc;
 }
 
-#single .tags a:hover {
+#single .tags a:hover,
+#tags .tag a:hover,
+#archive .group .value .tags a:hover {
   background: #242628;
   color: #2bbc8a !important;
 }
 
+#footer {
+  margin-top: 50px;
+}
+
+.profile h1 {
+  font-family: "Menlo", "Meslo LG", monospace;
+}
 
 /* Header avatar image fade */
 
@@ -96,6 +110,17 @@ ul.post-list li {
 
 ul.post-list li a {
 	padding-left: 1rem;
+}
+
+/* Social */
+#social a.symbol {
+  font-size: 2rem;
+  color: #cdd4da;
+}
+
+#social a.symbol:hover {
+  color: #2bbc8a;
+  transition: 0.5s;
 }
 
 /* Other things */
