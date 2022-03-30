@@ -10,6 +10,8 @@ params:
   author: Noel Bundick
   customCSS:
     - css/custom.css
+    - fontawesome/css/fontawesome.min.css
+    - fontawesome/css/brands.min.css
   hiddenPostSummaryInHomePage: true
   relativeURLs: true
   showPowerBy: false
@@ -17,6 +19,7 @@ params:
 social:
   github: https://www.github.com/noelbundick
   twitter: https://twitter.com/acanthamoeba
+  linkedin: https://www.linkedin.com/in/noelbundick/
 markup:
   highlight:
     guessSyntax: true
