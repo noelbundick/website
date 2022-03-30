@@ -24,6 +24,48 @@
   padding: 0 24px;
 }
 
+a, nav.navigation a {
+  color: #2bbc8a;
+}
+
+a:hover, nav.navigation a:hover {
+  color: #2bbc8a;
+  text-decoration: underline;
+}
+
+#social a:hover {
+  text-decoration: none;
+}
+
+body {
+  background-color: #1d1f21;
+  color: #c9cacc;
+}
+
+nav.navigation {
+  background: transparent;
+}
+
+.profile h1 {
+  color: #c9cacc;
+  font-size: 30px;
+}
+
+.toc {
+  background: #242628;
+}
+
+#single .tags a {
+  background: #242628;
+  color: #c9cacc;
+}
+
+#single .tags a:hover {
+  background: #242628;
+  color: #2bbc8a !important;
+}
+
+
 /* Header avatar image fade */
 
 .profile img.avatar {
@@ -54,4 +96,11 @@ ul.post-list li {
 
 ul.post-list li a {
 	padding-left: 1rem;
+}
+
+/* Other things */
+
+::selection {
+	color: #fff;
+	background-color: #2bbc8a;
 }
