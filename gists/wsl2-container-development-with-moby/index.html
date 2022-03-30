@@ -5,57 +5,57 @@ Even prior to the recent licensing changes to Docker Desktop, I found myself inc
 <span class=split>·</span>
 <span>532 words</span>
 <span class=split>·</span>
-<span>3 minute read</span><div><a href=https://gist.github.com/fa8a4ddec573b00f10f3b472ac2150df>view gist on GitHub</a></div></div><aside class=toc><details><summary>Table of Contents</summary><div><nav id=TableOfContents><ul><li><a href=#usage>Usage</a></li><li><a href=#notes>Notes</a></li><li><a href=#links>Links</a></li></ul></nav></div></details></aside><div class=content><h1 id=wsl2-container-development-with-moby>WSL2 container development with Moby <a href=#wsl2-container-development-with-moby class=anchor>🔗</a></h1><p>Building, pulling, pushing, and running containers is something many developers do often without even thinking. Most of my development over the past couple of years has been exclusively in a Linux environment, specifically WSL2.</p><p>Even prior to the recent <a href=https://www.docker.com/blog/updating-product-subscriptions/ target=_blank rel=noopener>licensing changes</a> to Docker Desktop, I found myself increasingly as an engineer whose workflow didn&rsquo;t line up with my tools. I never used the GUI features. I never built Windows containers. I used <a href=https://kind.sigs.k8s.io/ target=_blank rel=noopener>kind</a> or <a href=https://k3d.io/ target=_blank rel=noopener>k3d</a> instead of the Docker Kubernetes functionality. I never mounted the Windows filesystem into my containers. And I certainly didn&rsquo;t enjoy frequent downtime caused by updates for those features that I wasn&rsquo;t using. I wanted the container experience in my dev environment to match what I got on a server - just the runtime & tools.</p><p>That said, I still like shiny new (or not-so-new but I never see anyone use them even though they rock!) bits like <a href=https://docs.docker.com/develop/develop-images/build_enhancements/ target=_blank rel=noopener>build secrets</a> and <a href=https://www.docker.com/blog/introduction-to-heredocs-in-dockerfiles/ target=_blank rel=noopener>heredocs in Dockerfiles</a>. The good news is that all of that BuildKit goodness is present in <a href=https://github.com/moby/moby target=_blank rel=noopener>Moby</a>!</p><p>And it&rsquo;s not particularly shouted from the rooftops, but Microsoft publishes and maintains a Moby distribution that&rsquo;s used in both GitHub Codespaces and Azure IoT Edge. Being included in 2 shipping products gives me more than enough confidence for me to use it in my dev environment and saves me from having to build it from source. Perfect!</p><h2 id=usage>Usage <a href=#usage class=anchor>🔗</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># Configure the repository</span>
+<span>3 minute read</span><div><a href=https://gist.github.com/fa8a4ddec573b00f10f3b472ac2150df>view gist on GitHub</a></div></div><aside class=toc><details><summary>Table of Contents</summary><div><nav id=TableOfContents><ul><li><a href=#usage>Usage</a></li><li><a href=#notes>Notes</a></li><li><a href=#links>Links</a></li></ul></nav></div></details></aside><div class=content><h1 id=wsl2-container-development-with-moby>WSL2 container development with Moby <a href=#wsl2-container-development-with-moby class=anchor>🔗</a></h1><p>Building, pulling, pushing, and running containers is something many developers do often without even thinking. Most of my development over the past couple of years has been exclusively in a Linux environment, specifically WSL2.</p><p>Even prior to the recent <a href=https://www.docker.com/blog/updating-product-subscriptions/ target=_blank rel=noopener>licensing changes</a> to Docker Desktop, I found myself increasingly as an engineer whose workflow didn&rsquo;t line up with my tools. I never used the GUI features. I never built Windows containers. I used <a href=https://kind.sigs.k8s.io/ target=_blank rel=noopener>kind</a> or <a href=https://k3d.io/ target=_blank rel=noopener>k3d</a> instead of the Docker Kubernetes functionality. I never mounted the Windows filesystem into my containers. And I certainly didn&rsquo;t enjoy frequent downtime caused by updates for those features that I wasn&rsquo;t using. I wanted the container experience in my dev environment to match what I got on a server - just the runtime & tools.</p><p>That said, I still like shiny new (or not-so-new but I never see anyone use them even though they rock!) bits like <a href=https://docs.docker.com/develop/develop-images/build_enhancements/ target=_blank rel=noopener>build secrets</a> and <a href=https://www.docker.com/blog/introduction-to-heredocs-in-dockerfiles/ target=_blank rel=noopener>heredocs in Dockerfiles</a>. The good news is that all of that BuildKit goodness is present in <a href=https://github.com/moby/moby target=_blank rel=noopener>Moby</a>!</p><p>And it&rsquo;s not particularly shouted from the rooftops, but Microsoft publishes and maintains a Moby distribution that&rsquo;s used in both GitHub Codespaces and Azure IoT Edge. Being included in 2 shipping products gives me more than enough confidence for me to use it in my dev environment and saves me from having to build it from source. Perfect!</p><h2 id=usage>Usage <a href=#usage class=anchor>🔗</a></h2><div class=highlight><pre tabindex=0 style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#586e75># Configure the repository</span>
 </span></span><span style=display:flex><span>curl -sSL https://packages.microsoft.com/config/ubuntu/20.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft-prod.list
 </span></span><span style=display:flex><span>curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc
 </span></span><span style=display:flex><span>sudo apt-get update
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Install moby</span>
+</span></span><span style=display:flex><span><span style=color:#586e75># Install moby</span>
 </span></span><span style=display:flex><span>sudo apt-get install moby-cli moby-buildx moby-compose moby-engine
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Let your account run docker w/o root</span>
-</span></span><span style=display:flex><span>sudo usermod -aG docker $USER
+</span></span><span style=display:flex><span><span style=color:#586e75># Let your account run docker w/o root</span>
+</span></span><span style=display:flex><span>sudo usermod -aG docker <span style=color:#268bd2>$USER</span>
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Add the System V init script</span>
+</span></span><span style=display:flex><span><span style=color:#586e75># Add the System V init script</span>
 </span></span><span style=display:flex><span>sudo curl -L https://raw.githubusercontent.com/moby/moby/master/contrib/init/sysvinit-debian/docker -o /etc/init.d/docker
 </span></span><span style=display:flex><span>sudo chmod +x /etc/init.d/docker
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Start the service</span>
+</span></span><span style=display:flex><span><span style=color:#586e75># Start the service</span>
 </span></span><span style=display:flex><span>sudo service docker start
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Yay, containers!</span>
+</span></span><span style=display:flex><span><span style=color:#586e75># Yay, containers!</span>
 </span></span><span style=display:flex><span>docker run --rm -it hello-world
-</span></span></code></pre></div><blockquote><p>I assume the <code>moby-engine</code>, <code>moby-cli</code>, etc. packages are also present for Debian, RHEL, and so on, but will leave that as an exercise for the reader</p></blockquote><h2 id=notes>Notes <a href=#notes class=anchor>🔗</a></h2><ul><li>The VS Code Remote Containers extension will pick it up automatically. Dev containers work great!</li><li>You&rsquo;ll need to run <code>service docker start</code> in your terminal to start the daemon (or otherwise include it in your <code>.bashrc</code>)<ul><li>Expect <code>dockerd</code> to start in about 1 second vs the ~2 minutes or so that Docker Desktop usually takes</li></ul></li><li>You&rsquo;ll have an instance of Docker per-WSL distribution, for better or worse. I like it, but just know that they&rsquo;re distinct</li><li>This is for Linux only - sorry Windows container users!</li><li>Your version string will be a little funky</li></ul><pre tabindex=0><code>~$ docker version
-Client:
- Cloud integration: 1.0.17
- Version:           20.10.8+azure
- API version:       1.41
- Go version:        go1.16.7
- Git commit:        3967b7d28e15a020e4ee344283128ead633b3e0c
- Built:             Thu Jul 29 13:55:47 2021
- OS/Arch:           linux/amd64
- Context:           default
- Experimental:      true
-
-Server:
- Engine:
-  Version:          20.10.8+azure
-  API version:      1.41 (minimum version 1.12)
-  Go version:       go1.16.7
-  Git commit:       75249d88bc107a122b503f6a50e89c994331867c
-  Built:            Fri Jul 30 01:30:57 2021
-  OS/Arch:          linux/amd64
-  Experimental:     false
- containerd:
-  Version:          1.4.9+azure
-  GitCommit:        e25210fe30a0a703442421b0f60afac609f950a3
- runc:
-  Version:          1.0.1
-  GitCommit:        4144b63817ebcc5b358fc2c8ef95f7cddd709aa7
- docker-init:
-  Version:          0.19.0
-  GitCommit:
-</code></pre><h2 id=links>Links <a href=#links class=anchor>🔗</a></h2><ul><li><a href=https://github.com/microsoft/vscode-dev-containers/blob/9f21fbbb5ce95c01cf4d7872e6facfc4232b2f46/containers/codespaces-linux/.devcontainer/library-scripts/docker-in-docker-debian.sh#L87 target=_blank rel=noopener>codespaces-linux</a> - Install script for GitHub Codespaces devcontainer</li><li><a href="https://docs.microsoft.com/en-us/azure/iot-edge/how-to-install-iot-edge?view=iotedge-2020-11" target=_blank rel=noopener>IoT Edge</a> - more context on Moby in Azure IoT Edge</li><li><a href=https://docs.microsoft.com/en-us/windows-server/administration/linux-package-repository-for-microsoft-software target=_blank rel=noopener>Linux Package Repository for Microsoft Products</a></li></ul></div><div class=tags><a href=/tags/gist>gist</a></div></section></main><section><ul class=post-list><li>2021-10-14
+</span></span></code></pre></div><blockquote><p>I assume the <code>moby-engine</code>, <code>moby-cli</code>, etc. packages are also present for Debian, RHEL, and so on, but will leave that as an exercise for the reader</p></blockquote><h2 id=notes>Notes <a href=#notes class=anchor>🔗</a></h2><ul><li>The VS Code Remote Containers extension will pick it up automatically. Dev containers work great!</li><li>You&rsquo;ll need to run <code>service docker start</code> in your terminal to start the daemon (or otherwise include it in your <code>.bashrc</code>)<ul><li>Expect <code>dockerd</code> to start in about 1 second vs the ~2 minutes or so that Docker Desktop usually takes</li></ul></li><li>You&rsquo;ll have an instance of Docker per-WSL distribution, for better or worse. I like it, but just know that they&rsquo;re distinct</li><li>This is for Linux only - sorry Windows container users!</li><li>Your version string will be a little funky</li></ul><div class=highlight><pre tabindex=0 style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>~$ docker version
+</span></span><span style=display:flex><span>Client:
+</span></span><span style=display:flex><span> Cloud integration: 1.0.17
+</span></span><span style=display:flex><span> Version:           20.10.8+azure
+</span></span><span style=display:flex><span> API version:       1.41
+</span></span><span style=display:flex><span> Go version:        go1.16.7
+</span></span><span style=display:flex><span> Git commit:        3967b7d28e15a020e4ee344283128ead633b3e0c
+</span></span><span style=display:flex><span> Built:             Thu Jul 29 13:55:47 2021
+</span></span><span style=display:flex><span> OS/Arch:           linux/amd64
+</span></span><span style=display:flex><span> Context:           default
+</span></span><span style=display:flex><span> Experimental:      true
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Server:
+</span></span><span style=display:flex><span> Engine:
+</span></span><span style=display:flex><span>  Version:          20.10.8+azure
+</span></span><span style=display:flex><span>  API version:      1.41 (minimum version 1.12)
+</span></span><span style=display:flex><span>  Go version:       go1.16.7
+</span></span><span style=display:flex><span>  Git commit:       75249d88bc107a122b503f6a50e89c994331867c
+</span></span><span style=display:flex><span>  Built:            Fri Jul 30 01:30:57 2021
+</span></span><span style=display:flex><span>  OS/Arch:          linux/amd64
+</span></span><span style=display:flex><span>  Experimental:     false
+</span></span><span style=display:flex><span> containerd:
+</span></span><span style=display:flex><span>  Version:          1.4.9+azure
+</span></span><span style=display:flex><span>  GitCommit:        e25210fe30a0a703442421b0f60afac609f950a3
+</span></span><span style=display:flex><span> runc:
+</span></span><span style=display:flex><span>  Version:          1.0.1
+</span></span><span style=display:flex><span>  GitCommit:        4144b63817ebcc5b358fc2c8ef95f7cddd709aa7
+</span></span><span style=display:flex><span> docker-init:
+</span></span><span style=display:flex><span>  Version:          0.19.0
+</span></span><span style=display:flex><span>  GitCommit:
+</span></span></code></pre></div><h2 id=links>Links <a href=#links class=anchor>🔗</a></h2><ul><li><a href=https://github.com/microsoft/vscode-dev-containers/blob/9f21fbbb5ce95c01cf4d7872e6facfc4232b2f46/containers/codespaces-linux/.devcontainer/library-scripts/docker-in-docker-debian.sh#L87 target=_blank rel=noopener>codespaces-linux</a> - Install script for GitHub Codespaces devcontainer</li><li><a href="https://docs.microsoft.com/en-us/azure/iot-edge/how-to-install-iot-edge?view=iotedge-2020-11" target=_blank rel=noopener>IoT Edge</a> - more context on Moby in Azure IoT Edge</li><li><a href=https://docs.microsoft.com/en-us/windows-server/administration/linux-package-repository-for-microsoft-software target=_blank rel=noopener>Linux Package Repository for Microsoft Products</a></li></ul></div><div class=tags><a href=/tags/gist>gist</a></div></section></main><section><ul class=post-list><li>2021-10-14
 <a href=/gists/optimizing-rust-container-builds/>Optimizing Rust container builds<h2></h2></a></li><li>2021-09-19
 <a href=/gists/wsl2-container-development-with-moby/>WSL2 container development with Moby<h2></h2></a></li><li>2019-12-17
 <a href=/gists/rdp-from-wsl/>RDP from WSL<h2></h2></a></li><li>2019-06-28
