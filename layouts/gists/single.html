@@ -30,6 +30,10 @@
 
   <div class="content">
     {{ .Content }}
+    {{ range .Params.gist_embed_files }}
+    <h3>{{ . }}</h3>
+    <script src="{{ $.Params.gist_url }}.js?file={{ . }}"></script>
+    {{ end }}
   </div>
 
   {{ with .Params.tags }}
