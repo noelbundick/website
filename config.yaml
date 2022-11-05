@@ -18,7 +18,7 @@ params:
   showToc: true
 social:
   github: https://www.github.com/noelbundick
-  twitter: https://twitter.com/acanthamoeba
+  mastodon: https://hachyderm.io/@acanthamoeba
   linkedin: https://www.linkedin.com/in/noelbundick/
 markup:
   highlight:

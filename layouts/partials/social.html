@@ -1,6 +1,6 @@
 <div id="social">
   {{ range $key, $val := .Site.Social }}
-  <a class="symbol" href="{{ $val }}">
+  <a class="symbol" rel="me" href="{{ $val }}">
     <i class="fa-brands fa-{{ $key }}"></i>
   </a>
   {{ end }}
